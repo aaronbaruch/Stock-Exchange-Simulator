@@ -1,0 +1,76 @@
+(lang dune 3.10)
+(name Stocks)
+(sections (lib .) (libexec .) (doc ../../doc/Stocks))
+(files
+ (lib
+  (META
+   cli.ml
+   cli.mli
+   data.ml
+   data.mli
+   dune-package
+   opam
+   stock.ml
+   stock.mli
+   stocks.a
+   stocks.cma
+   stocks.cmi
+   stocks.cmt
+   stocks.cmx
+   stocks.cmxa
+   stocks.ml
+   stocks__Cli.cmi
+   stocks__Cli.cmt
+   stocks__Cli.cmti
+   stocks__Cli.cmx
+   stocks__Data.cmi
+   stocks__Data.cmt
+   stocks__Data.cmti
+   stocks__Data.cmx
+   stocks__Stock.cmi
+   stocks__Stock.cmt
+   stocks__Stock.cmti
+   stocks__Stock.cmx
+   stocks__User.cmi
+   stocks__User.cmt
+   stocks__User.cmti
+   stocks__User.cmx
+   user.ml
+   user.mli))
+ (libexec (stocks.cmxs))
+ (doc (README.md)))
+(library
+ (name Stocks)
+ (kind normal)
+ (archives (byte stocks.cma) (native stocks.cmxa))
+ (plugins (byte stocks.cma) (native stocks.cmxs))
+ (native_archives stocks.a)
+ (main_module_name Stocks)
+ (modes byte native)
+ (modules
+  (wrapped
+   (group
+    (alias
+     (obj_name stocks)
+     (visibility public)
+     (kind alias)
+     (source (path Stocks) (impl (path stocks.ml-gen))))
+    (name Stocks)
+    (modules
+     (module
+      (obj_name stocks__Cli)
+      (visibility public)
+      (source (path Cli) (intf (path cli.mli)) (impl (path cli.ml))))
+     (module
+      (obj_name stocks__Data)
+      (visibility public)
+      (source (path Data) (intf (path data.mli)) (impl (path data.ml))))
+     (module
+      (obj_name stocks__Stock)
+      (visibility public)
+      (source (path Stock) (intf (path stock.mli)) (impl (path stock.ml))))
+     (module
+      (obj_name stocks__User)
+      (visibility public)
+      (source (path User) (intf (path user.mli)) (impl (path user.ml))))))
+   (wrapped true))))
