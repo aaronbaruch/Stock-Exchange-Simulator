@@ -18,9 +18,8 @@ let () =
   (* Get data *)
   print_endline "Please enter your data file";
   print_string "> ";
-  let file = read_line () in
-  print_endline "Reading file...";
-  let input = file |> In_channel.open_text |> In_channel.input_all in
+  (* let file = read_line () in print_endline "Reading file..."; let input =
+     file |> In_channel.open_text |> In_channel.input_all in*)
   (* Get username *)
   print_endline "Please enter the your username:";
   print_string "> ";

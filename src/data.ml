@@ -1,4 +1,3 @@
-(*opam install yojson*)
 open Yojson.Basic.Util
 
 module type Data = sig
@@ -9,18 +8,12 @@ end
 
 module DataStorage : Data = struct
   (* Load JSON data from file *)
-  let prices =
-    try Yojson.Basic.from_file "prices.json" |> to_list with _ -> []
+  let prices = try Yojson.Basic.from_file "prices.json" with _ -> `Null
 
-  (* Find price given a day and ticker *)
-  let rec find_price day ticker = function
-    | [] -> -1
-    | h :: t ->
-        let day_from_json = h |> member "day" |> to_int in
-        let ticker_from_json = h |> member "ticker" |> to_string in
-        if day_from_json = day && ticker_from_json = ticker then
-          h |> member "price" |> to_int
-        else find_price day ticker t
-
-  let get_ticker_price day ticker = find_price day ticker prices
+  let get_ticker_price day ticker =
+    try
+      prices
+      |> member (string_of_int day)
+      |> member ticker |> to_string |> int_of_string
+    with _ -> -1
 end

@@ -1,3 +1,4 @@
+open Data
 (** Module defines User and functions to interact with a financial system*)
 module type User = sig
   type t
@@ -30,7 +31,6 @@ end
 
 (** Implementation of User *)
 module UserImpl : User = struct
-  include Data
 
   type t = {
     username : string;

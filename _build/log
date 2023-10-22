@@ -3,7 +3,7 @@
 # Shared cache: disabled
 # Workspace root: /Users/jakesilver/Documents/3110/3110-final-project
 # Auto-detected concurrency: 10
-$ /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/hj/2w1s9rpx58vgll96y2t7btpm0000gn/T/dune_96f3f5_output
+$ /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/hj/2w1s9rpx58vgll96y2t7btpm0000gn/T/dune_9c0778_output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -117,22 +117,33 @@ $ /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/hj
 #      ; windows_unicode = false
 #      }
 #  }
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -impl src/data.ml) > _build/default/src/.stocks.objs/stocks__Data.impl.d
 $ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -intf src/data.mli) > _build/default/src/.stocks.objs/stocks__Data.intf.d
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -intf src/cli.mli) > _build/default/src/.stocks.objs/stocks__Cli.intf.d
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -impl src/user.ml) > _build/default/src/.stocks.objs/stocks__User.impl.d
 $ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Data.cmi -c -intf src/data.mli)
-$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Data.cmo -c -impl src/data.ml)
 $ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Cli.cmi -c -intf src/cli.mli)
-> File "src/cli.mli", line 4, characters 35-41:
-> 4 |   val make_user : string -> int -> User.t
+> File "src/cli.mli", line 7, characters 35-41:
+> 7 |   val make_user : string -> int -> User.t
 >                                        ^^^^^^
 > Error: Unbound type constructor User.t
 [2]
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Data.cmo -c -impl src/data.ml)
 $ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__User.cmo -c -impl src/user.ml)
+> File "src/user.ml", line 2, characters 0-75:
+> 2 | (** Module defines User and functions to interact with a financial system*)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> Error (warning 50 [unexpected-docstring]): ambiguous documentation comment
 > File "src/user.ml", line 62, characters 23-39:
 > 62 |     let ticker_price = get_ticker_price user.day index in
 >                             ^^^^^^^^^^^^^^^^
 > Error: Unbound value get_ticker_price
 [2]
 $ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.stocks.objs/byte -I src/.stocks.objs/native -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/native/stocks__User.cmx -c -impl src/user.ml)
+> File "src/user.ml", line 2, characters 0-75:
+> 2 | (** Module defines User and functions to interact with a financial system*)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> Error (warning 50 [unexpected-docstring]): ambiguous documentation comment
 > File "src/user.ml", line 62, characters 23-39:
 > 62 |     let ticker_price = get_ticker_price user.day index in
 >                             ^^^^^^^^^^^^^^^^
