@@ -1,5 +1,5 @@
-Open User
-Open Data
+open User
+open Data
 
 module type CliType = sig
   type t

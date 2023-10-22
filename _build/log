@@ -1,9 +1,9 @@
 # dune build
 # OCAMLPARAM: unset
 # Shared cache: disabled
-# Workspace root: /Users/aarbaruch/cs3110/3110-final-project
-# Auto-detected concurrency: 8
-$ /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/jg/w975md5568q2r3rx3vnt56jm0000gp/T/dune_77b246_output
+# Workspace root: /Users/jakesilver/Documents/3110/3110-final-project
+# Auto-detected concurrency: 10
+$ /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/hj/2w1s9rpx58vgll96y2t7btpm0000gn/T/dune_96f3f5_output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -12,44 +12,45 @@ $ /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/jg/
 #  ; for_host = None
 #  ; fdo_target_exe = None
 #  ; build_dir = In_build_dir "default"
-#  ; ocaml_bin = External "/Users/aarbaruch/.opam/cs3110-2023fa/bin"
-#  ; ocaml = Ok External "/Users/aarbaruch/.opam/cs3110-2023fa/bin/ocaml"
-#  ; ocamlc = External "/Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt"
+#  ; ocaml_bin = External "/Users/jakesilver/.opam/cs3110-2023fa/bin"
+#  ; ocaml = Ok External "/Users/jakesilver/.opam/cs3110-2023fa/bin/ocaml"
+#  ; ocamlc = External "/Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt"
 #  ; ocamlopt =
-#      Ok External "/Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlopt.opt"
+#      Ok External "/Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt"
 #  ; ocamldep =
-#      Ok External "/Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamldep.opt"
+#      Ok External "/Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt"
 #  ; ocamlmklib =
-#      Ok External "/Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlmklib.opt"
+#      Ok External "/Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlmklib.opt"
 #  ; env =
 #      map
 #        { "DUNE_OCAML_HARDCODED" :
-#            "/Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml:/Users/aarbaruch/.opam/cs3110-2023fa/lib"
+#            "/Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml:/Users/jakesilver/.opam/cs3110-2023fa/lib"
 #        ; "DUNE_OCAML_STDLIB" :
-#            "/Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml"
-#        ; "DUNE_SOURCEROOT" : "/Users/aarbaruch/cs3110/3110-final-project"
+#            "/Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml"
+#        ; "DUNE_SOURCEROOT" :
+#            "/Users/jakesilver/Documents/3110/3110-final-project"
 #        ; "INSIDE_DUNE" :
-#            "/Users/aarbaruch/cs3110/3110-final-project/_build/default"
+#            "/Users/jakesilver/Documents/3110/3110-final-project/_build/default"
 #        ; "OCAMLFIND_IGNORE_DUPS_IN" :
-#            "/Users/aarbaruch/cs3110/3110-final-project/_build/install/default/lib"
+#            "/Users/jakesilver/Documents/3110/3110-final-project/_build/install/default/lib"
 #        ; "OCAMLPATH" :
-#            "/Users/aarbaruch/cs3110/3110-final-project/_build/install/default/lib"
+#            "/Users/jakesilver/Documents/3110/3110-final-project/_build/install/default/lib"
 #        ; "OCAMLTOP_INCLUDE_PATH" :
-#            "/Users/aarbaruch/cs3110/3110-final-project/_build/install/default/lib/toplevel"
+#            "/Users/jakesilver/Documents/3110/3110-final-project/_build/install/default/lib/toplevel"
 #        ; "OCAML_COLOR" : "always"
 #        ; "OPAMCOLOR" : "always"
 #        }
 #  ; findlib_paths =
-#      [ External "/Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml"
-#      ; External "/Users/aarbaruch/.opam/cs3110-2023fa/lib"
+#      [ External "/Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml"
+#      ; External "/Users/jakesilver/.opam/cs3110-2023fa/lib"
 #      ]
 #  ; natdynlink_supported = true
 #  ; supports_shared_libraries = true
 #  ; ocaml_config =
 #      { version = "5.0.0"
 #      ; standard_library_default =
-#          "/Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml"
-#      ; standard_library = "/Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml"
+#          "/Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml"
+#      ; standard_library = "/Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml"
 #      ; standard_runtime = "the_standard_runtime_variable_was_deleted"
 #      ; ccomp_type = "cc"
 #      ; c_compiler = "cc"
@@ -95,8 +96,8 @@ $ /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/jg/
 #      ; os_type = "Unix"
 #      ; default_executable_name = "a.out"
 #      ; systhread_supported = true
-#      ; host = "aarch64-apple-darwin22.5.0"
-#      ; target = "aarch64-apple-darwin22.5.0"
+#      ; host = "aarch64-apple-darwin21.6.0"
+#      ; target = "aarch64-apple-darwin21.6.0"
 #      ; profiling = false
 #      ; flambda = false
 #      ; spacetime = false
@@ -116,33 +117,25 @@ $ /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/jg/
 #      ; windows_unicode = false
 #      }
 #  }
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -49 -nopervasives -nostdlib -g -bin-annot -I src/.stocks.objs/byte -no-alias-deps -opaque -o src/.stocks.objs/byte/stocks.cmo -c -impl src/stocks.ml-gen)
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -intf src/stock.mli) > _build/default/src/.stocks.objs/stocks__Stock.intf.d
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -intf src/data.mli) > _build/default/src/.stocks.objs/stocks__Data.intf.d
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -impl src/user.ml) > _build/default/src/.stocks.objs/stocks__User.impl.d
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -intf src/user.mli) > _build/default/src/.stocks.objs/stocks__User.intf.d
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -impl src/stock.ml) > _build/default/src/.stocks.objs/stocks__Stock.impl.d
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -impl src/cli.ml) > _build/default/src/.stocks.objs/stocks__Cli.impl.d
-> File "src/cli.ml", line 2, characters 0-4:
-> 2 | Open Data
->     ^^^^
-> Error: Syntax error
-[2]
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -intf src/cli.mli) > _build/default/src/.stocks.objs/stocks__Cli.intf.d
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -impl src/data.ml) > _build/default/src/.stocks.objs/stocks__Data.impl.d
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Data.cmi -c -intf src/data.mli)
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Stock.cmi -c -intf src/stock.mli)
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__User.cmi -c -intf src/user.mli)
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Data.cmo -c -impl src/data.ml)
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Stock.cmo -c -impl src/stock.ml)
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__User.cmo -c -impl src/user.ml)
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Cli.cmi -c -intf src/cli.mli)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -intf src/data.mli) > _build/default/src/.stocks.objs/stocks__Data.intf.d
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Data.cmi -c -intf src/data.mli)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Data.cmo -c -impl src/data.ml)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Cli.cmi -c -intf src/cli.mli)
 > File "src/cli.mli", line 4, characters 35-41:
 > 4 |   val make_user : string -> int -> User.t
 >                                        ^^^^^^
 > Error: Unbound type constructor User.t
 [2]
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.stocks.objs/byte -I src/.stocks.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/native/stocks__User.cmx -c -impl src/user.ml)
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -49 -nopervasives -nostdlib -g -I src/.stocks.objs/byte -I src/.stocks.objs/native -intf-suffix .ml-gen -no-alias-deps -opaque -o src/.stocks.objs/native/stocks.cmx -c -impl src/stocks.ml-gen)
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.stocks.objs/byte -I src/.stocks.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/native/stocks__Stock.cmx -c -impl src/stock.ml)
-$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.stocks.objs/byte -I src/.stocks.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/native/stocks__Data.cmx -c -impl src/data.ml)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__User.cmo -c -impl src/user.ml)
+> File "src/user.ml", line 62, characters 23-39:
+> 62 |     let ticker_price = get_ticker_price user.day index in
+>                             ^^^^^^^^^^^^^^^^
+> Error: Unbound value get_ticker_price
+[2]
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.stocks.objs/byte -I src/.stocks.objs/native -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/native/stocks__User.cmx -c -impl src/user.ml)
+> File "src/user.ml", line 62, characters 23-39:
+> 62 |     let ticker_price = get_ticker_price user.day index in
+>                             ^^^^^^^^^^^^^^^^
+> Error: Unbound value get_ticker_price
+[2]
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.stocks.objs/byte -I src/.stocks.objs/native -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/native/stocks__Data.cmx -c -impl src/data.ml)

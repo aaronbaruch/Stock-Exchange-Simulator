@@ -1,3 +1,4 @@
 (library
  (name stocks)
- (public_name Stocks))
+ (public_name stocks)
+ (libraries yojson))

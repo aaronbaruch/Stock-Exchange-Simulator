@@ -6,8 +6,5 @@ module Cli = Stocks__Cli
 (** @canonical Stocks.Data *)
 module Data = Stocks__Data
 
-(** @canonical Stocks.Stock *)
-module Stock = Stocks__Stock
-
 (** @canonical Stocks.User *)
 module User = Stocks__User
