@@ -1,0 +1,37 @@
+lib: [
+  "_build/install/default/lib/stocks/META"
+  "_build/install/default/lib/stocks/cli.ml"
+  "_build/install/default/lib/stocks/cli.mli"
+  "_build/install/default/lib/stocks/data.ml"
+  "_build/install/default/lib/stocks/data.mli"
+  "_build/install/default/lib/stocks/dune-package"
+  "_build/install/default/lib/stocks/opam"
+  "_build/install/default/lib/stocks/stocks.a"
+  "_build/install/default/lib/stocks/stocks.cma"
+  "_build/install/default/lib/stocks/stocks.cmi"
+  "_build/install/default/lib/stocks/stocks.cmt"
+  "_build/install/default/lib/stocks/stocks.cmx"
+  "_build/install/default/lib/stocks/stocks.cmxa"
+  "_build/install/default/lib/stocks/stocks.ml"
+  "_build/install/default/lib/stocks/stocks__Cli.cmi"
+  "_build/install/default/lib/stocks/stocks__Cli.cmt"
+  "_build/install/default/lib/stocks/stocks__Cli.cmti"
+  "_build/install/default/lib/stocks/stocks__Cli.cmx"
+  "_build/install/default/lib/stocks/stocks__Data.cmi"
+  "_build/install/default/lib/stocks/stocks__Data.cmt"
+  "_build/install/default/lib/stocks/stocks__Data.cmti"
+  "_build/install/default/lib/stocks/stocks__Data.cmx"
+  "_build/install/default/lib/stocks/stocks__User.cmi"
+  "_build/install/default/lib/stocks/stocks__User.cmt"
+  "_build/install/default/lib/stocks/stocks__User.cmti"
+  "_build/install/default/lib/stocks/stocks__User.cmx"
+  "_build/install/default/lib/stocks/user.ml"
+  "_build/install/default/lib/stocks/user.mli"
+]
+libexec: [
+  "_build/install/default/lib/stocks/stocks.cmxs"
+]
+doc: [
+  "_build/install/default/doc/stocks/README.md"
+  "_build/install/default/doc/stocks/README.yaml"
+]
