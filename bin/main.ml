@@ -26,7 +26,7 @@ let rec main user =
   print_endline
     "Please enter the COMMAND you would like to execute: \n\
      \"deposit N\", \"withdraw N\", \"view\", \"buy <TICKER> <SHARES>\", \
-     \"sell <TICKER> <SHARES>\", or \"next_day\"";
+     \"sell <TICKER> <SHARES>\", \"balance\", or \"next_day\"";
   print_string "> ";
 
   (* Check which command was made *)
@@ -52,6 +52,10 @@ let rec main user =
   | [ "next_day" ] ->
       print_endline "Going to the next day!";
       main (Cli.Cli.next_day user)
+  | [ "balance" ] ->
+      print_endline "You have: ";
+      print_endline (string_of_int (Cli.Cli.view_balance user));
+      main user
   | _ -> failwith "Invalid argument"
 
 let () =

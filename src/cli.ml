@@ -12,6 +12,7 @@ module type CliType = sig
 
   (* val get_stock : User_Impl -> int -> string -> int *)
   val view_portfolio : User_Impl.t -> (string * int) list
+  val view_balance : User_Impl.t -> int
 end
 
 module Cli : CliType = struct
@@ -33,6 +34,7 @@ module Cli : CliType = struct
 
   (* let get_stock (index : string) = failwith "u" *)
   let view_portfolio (user : User_Impl.t) = User_Impl.portfolio user
+  let view_balance (user : User_Impl.t) = User_Impl.balance user
 end
 
 (* module Cli : CliType = struct type t

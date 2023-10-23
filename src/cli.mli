@@ -12,6 +12,7 @@ module type CliType = sig
 
   (* val get_stock : string -> int *)
   val view_portfolio : User_Impl.t -> (string * int) list
+  val view_balance : User_Impl.t -> int
 end
 
 module Cli : CliType
