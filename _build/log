@@ -1,0 +1,145 @@
+# dune build
+# OCAMLPARAM: unset
+# Shared cache: disabled
+# Workspace root: /Users/jakesilver/Documents/3110/final/3110-final-project
+# Auto-detected concurrency: 10
+$ /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/hj/2w1s9rpx58vgll96y2t7btpm0000gn/T/dune_38526c_output
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Dev
+#  ; merlin = true
+#  ; for_host = None
+#  ; fdo_target_exe = None
+#  ; build_dir = In_build_dir "default"
+#  ; ocaml_bin = External "/Users/jakesilver/.opam/cs3110-2023fa/bin"
+#  ; ocaml = Ok External "/Users/jakesilver/.opam/cs3110-2023fa/bin/ocaml"
+#  ; ocamlc = External "/Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt"
+#  ; ocamlopt =
+#      Ok External "/Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt"
+#  ; ocamldep =
+#      Ok External "/Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt"
+#  ; ocamlmklib =
+#      Ok External "/Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlmklib.opt"
+#  ; env =
+#      map
+#        { "DUNE_OCAML_HARDCODED" :
+#            "/Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml:/Users/jakesilver/.opam/cs3110-2023fa/lib"
+#        ; "DUNE_OCAML_STDLIB" :
+#            "/Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml"
+#        ; "DUNE_SOURCEROOT" :
+#            "/Users/jakesilver/Documents/3110/final/3110-final-project"
+#        ; "INSIDE_DUNE" :
+#            "/Users/jakesilver/Documents/3110/final/3110-final-project/_build/default"
+#        ; "OCAMLFIND_IGNORE_DUPS_IN" :
+#            "/Users/jakesilver/Documents/3110/final/3110-final-project/_build/install/default/lib"
+#        ; "OCAMLPATH" :
+#            "/Users/jakesilver/Documents/3110/final/3110-final-project/_build/install/default/lib"
+#        ; "OCAMLTOP_INCLUDE_PATH" :
+#            "/Users/jakesilver/Documents/3110/final/3110-final-project/_build/install/default/lib/toplevel"
+#        ; "OCAML_COLOR" : "always"
+#        ; "OPAMCOLOR" : "always"
+#        }
+#  ; findlib_paths =
+#      [ External "/Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml"
+#      ; External "/Users/jakesilver/.opam/cs3110-2023fa/lib"
+#      ]
+#  ; natdynlink_supported = true
+#  ; supports_shared_libraries = true
+#  ; ocaml_config =
+#      { version = "5.0.0"
+#      ; standard_library_default =
+#          "/Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml"
+#      ; standard_library = "/Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml"
+#      ; standard_runtime = "the_standard_runtime_variable_was_deleted"
+#      ; ccomp_type = "cc"
+#      ; c_compiler = "cc"
+#      ; ocamlc_cflags =
+#          [ "-O2"; "-fno-strict-aliasing"; "-fwrapv"; "-pthread" ]
+#      ; ocamlc_cppflags = [ "-D_FILE_OFFSET_BITS=64" ]
+#      ; ocamlopt_cflags =
+#          [ "-O2"; "-fno-strict-aliasing"; "-fwrapv"; "-pthread" ]
+#      ; ocamlopt_cppflags = [ "-D_FILE_OFFSET_BITS=64" ]
+#      ; bytecomp_c_compiler =
+#          [ "cc"
+#          ; "-O2"
+#          ; "-fno-strict-aliasing"
+#          ; "-fwrapv"
+#          ; "-pthread"
+#          ; "-D_FILE_OFFSET_BITS=64"
+#          ]
+#      ; bytecomp_c_libraries = [ "-lm"; "-lpthread" ]
+#      ; native_c_compiler =
+#          [ "cc"
+#          ; "-O2"
+#          ; "-fno-strict-aliasing"
+#          ; "-fwrapv"
+#          ; "-pthread"
+#          ; "-D_FILE_OFFSET_BITS=64"
+#          ]
+#      ; native_c_libraries = [ "-lm"; "-lpthread" ]
+#      ; native_pack_linker = [ "ld"; "-r"; "-o" ]
+#      ; cc_profile = []
+#      ; architecture = "arm64"
+#      ; model = "default"
+#      ; int_size = 63
+#      ; word_size = 64
+#      ; system = "macosx"
+#      ; asm = [ "cc"; "-c"; "-Wno-trigraphs" ]
+#      ; asm_cfi_supported = true
+#      ; with_frame_pointers = false
+#      ; ext_exe = ""
+#      ; ext_obj = ".o"
+#      ; ext_asm = ".s"
+#      ; ext_lib = ".a"
+#      ; ext_dll = ".so"
+#      ; os_type = "Unix"
+#      ; default_executable_name = "a.out"
+#      ; systhread_supported = true
+#      ; host = "aarch64-apple-darwin21.6.0"
+#      ; target = "aarch64-apple-darwin21.6.0"
+#      ; profiling = false
+#      ; flambda = false
+#      ; spacetime = false
+#      ; safe_string = true
+#      ; exec_magic_number = "Caml1999X032"
+#      ; cmi_magic_number = "Caml1999I032"
+#      ; cmo_magic_number = "Caml1999O032"
+#      ; cma_magic_number = "Caml1999A032"
+#      ; cmx_magic_number = "Caml1999Y032"
+#      ; cmxa_magic_number = "Caml1999Z032"
+#      ; ast_impl_magic_number = "Caml1999M032"
+#      ; ast_intf_magic_number = "Caml1999N032"
+#      ; cmxs_magic_number = "Caml1999D032"
+#      ; cmt_magic_number = "Caml1999T032"
+#      ; natdynlink_supported = true
+#      ; supports_shared_libraries = true
+#      ; windows_unicode = false
+#      }
+#  }
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -49 -nopervasives -nostdlib -g -bin-annot -I src/.stocks.objs/byte -no-alias-deps -opaque -o src/.stocks.objs/byte/stocks.cmo -c -impl src/stocks.ml-gen)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -intf src/cli.mli) > _build/default/src/.stocks.objs/stocks__Cli.intf.d
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -impl src/cli.ml) > _build/default/src/.stocks.objs/stocks__Cli.impl.d
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -impl src/user.ml) > _build/default/src/.stocks.objs/stocks__User.impl.d
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -intf src/data.mli) > _build/default/src/.stocks.objs/stocks__Data.intf.d
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -impl src/data.ml) > _build/default/src/.stocks.objs/stocks__Data.impl.d
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -intf src/user.mli) > _build/default/src/.stocks.objs/stocks__User.intf.d
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Data.cmi -c -intf src/data.mli)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__User.cmi -c -intf src/user.mli)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Data.cmo -c -impl src/data.ml)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Cli.cmi -c -intf src/cli.mli)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__User.cmo -c -impl src/user.ml)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I bin/.main.eobjs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -I src/.stocks.objs/byte -no-alias-deps -opaque -o bin/.main.eobjs/byte/dune__exe__Main.cmi -c -intf bin/main.mli)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.stocks.objs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/byte/stocks__Cli.cmo -c -impl src/cli.ml)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I test/.main.eobjs/byte -I /Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml/unix -I /Users/jakesilver/.opam/cs3110-2023fa/lib/ounit2 -I /Users/jakesilver/.opam/cs3110-2023fa/lib/ounit2/advanced -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/stdlib-shims -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -I src/.stocks.objs/byte -no-alias-deps -opaque -o test/.main.eobjs/byte/dune__exe__Main.cmi -c -intf test/main.mli)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o src/stocks.cma src/.stocks.objs/byte/stocks.cmo src/.stocks.objs/byte/stocks__Data.cmo src/.stocks.objs/byte/stocks__User.cmo src/.stocks.objs/byte/stocks__Cli.cmo)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -49 -nopervasives -nostdlib -g -I src/.stocks.objs/byte -I src/.stocks.objs/native -intf-suffix .ml-gen -no-alias-deps -opaque -o src/.stocks.objs/native/stocks.cmx -c -impl src/stocks.ml-gen)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.stocks.objs/byte -I src/.stocks.objs/native -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/native/stocks__Data.cmx -c -impl src/data.ml)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.stocks.objs/byte -I src/.stocks.objs/native -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/native/stocks__User.cmx -c -impl src/user.ml)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.stocks.objs/byte -I src/.stocks.objs/native -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/native/stocks__Cli.cmx -c -impl src/cli.ml)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I test/.main.eobjs/byte -I test/.main.eobjs/native -I /Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml/unix -I /Users/jakesilver/.opam/cs3110-2023fa/lib/ounit2 -I /Users/jakesilver/.opam/cs3110-2023fa/lib/ounit2/advanced -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/stdlib-shims -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -I src/.stocks.objs/byte -I src/.stocks.objs/native -intf-suffix .ml -no-alias-deps -opaque -o test/.main.eobjs/native/dune__exe__Main.cmx -c -impl test/main.ml)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I bin/.main.eobjs/byte -I bin/.main.eobjs/native -I /Users/jakesilver/.opam/cs3110-2023fa/lib/seq -I /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson -I src/.stocks.objs/byte -I src/.stocks.objs/native -intf-suffix .ml -no-alias-deps -opaque -o bin/.main.eobjs/native/dune__exe__Main.cmx -c -impl bin/main.ml)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o src/stocks.cmxa src/.stocks.objs/native/stocks.cmx src/.stocks.objs/native/stocks__Data.cmx src/.stocks.objs/native/stocks__User.cmx src/.stocks.objs/native/stocks__Cli.cmx)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -shared -linkall -I src -o src/stocks.cmxs src/stocks.cmxa)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o test/main.exe /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson/yojson.cmxa src/stocks.cmxa /Users/jakesilver/.opam/cs3110-2023fa/lib/ocaml/unix/unix.cmxa /Users/jakesilver/.opam/cs3110-2023fa/lib/stdlib-shims/stdlib_shims.cmxa /Users/jakesilver/.opam/cs3110-2023fa/lib/ounit2/advanced/oUnitAdvanced.cmxa /Users/jakesilver/.opam/cs3110-2023fa/lib/ounit2/oUnit.cmxa test/.main.eobjs/native/dune__exe__Main.cmx)
+$ (cd _build/default && /Users/jakesilver/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o bin/main.exe /Users/jakesilver/.opam/cs3110-2023fa/lib/yojson/yojson.cmxa src/stocks.cmxa bin/.main.eobjs/native/dune__exe__Main.cmx)
