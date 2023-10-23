@@ -1,16 +1,9 @@
-open Cli
-open Stock
-open User
+open Stocks
 
 (* read-eval-print loop *)
-let rec repl (eval : string -> string) : unit =
-  print_string "> ";
-  let input = read_line () in
-  match input with
-  | "" -> print_endline "bye"
-  | _ ->
-      input |> eval |> print_endline;
-      repl eval
+(* let rec repl (eval : string -> string) : unit = print_string "> "; let input
+   = read_line () in match input with | "" -> print_endline "bye" | _ -> input
+   |> eval |> print_endline; repl eval *)
 
 (*********** command line interface ***********)
 let () =
@@ -31,7 +24,7 @@ let () =
   let balance = read_int () in
   print_endline "Reading balance...";
   (* Create user *)
-  let user = Cli.make_user username balance in
+  let user = ref (Cli.Cli.make_user username balance) in
   print_endline "Creating user...";
   (* Offer commands *)
   print_endline
@@ -41,10 +34,21 @@ let () =
   print_string "> ";
   (* Check which command was made *)
   match String.split_on_char ' ' (read_line ()) with
-  | [ "deposit"; n ] -> Cli.deposit n
-  | [ "withdraw"; n ] -> Cli.withdraw n
-  | [ "view" ] -> Cli.view_portfolio
-  | [ "buy"; x; y ] -> Cli.buy x y
-  | [ "sell"; x; y ] -> Cli.sell x y
-  | [ "next_day" ] -> Cli.next_day
+  | [ "deposit"; n ] ->
+      print_endline "Depositing cash";
+      user := Cli.Cli.deposit !user (int_of_string n)
+  | [ "withdraw"; n ] ->
+      print_endline "Withdrawing cash";
+      user := Cli.Cli.withdraw !user (int_of_string n)
+  | [ "view" ] -> print_endline "Viewing"
+  (*View portfolio later*)
+  | [ "buy"; x; y ] ->
+      print_endline "Buying stock";
+      user := Cli.Cli.buy !user x (int_of_string y)
+  | [ "sell"; x; y ] ->
+      print_endline "Selling stock";
+      user := Cli.Cli.sell !user x (int_of_string y)
+  | [ "next_day" ] ->
+      print_endline "going to next Day!";
+      user := Cli.Cli.next_day !user
   | _ -> failwith "Invalid argument"

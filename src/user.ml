@@ -1,5 +1,6 @@
 open Data
 (** Module defines User and functions to interact with a financial system*)
+
 module type User = sig
   type t
   (** Type representing user*)
@@ -27,11 +28,12 @@ module type User = sig
 
   val next_day : t -> t
   (** Move the user to the next day *)
+
+  val display_username : t -> string
 end
 
 (** Implementation of User *)
 module UserImpl : User = struct
-
   type t = {
     username : string;
     balance : int;
@@ -39,7 +41,8 @@ module UserImpl : User = struct
     day : int;
   }
 
-include Data
+  module Data_Impl = DataStorage
+
   (** Type representation of User, represent's a user's critical information *)
 
   (** [init_user username balance] creates a new user account with the given
@@ -61,7 +64,7 @@ include Data
   let portfolio (user : t) : (string * int) list = user.stocks
 
   let able_to_buy (user : t) (index : string) (n : int) : bool =
-    let ticker_price = get_ticker_price user.day index in
+    let ticker_price = Data_Impl.get_ticker_price user.day index in
     ticker_price * n <= user.balance
 
   let rec update_user_stocks_list (stocks : (string * int) list)
@@ -72,13 +75,13 @@ include Data
         if k = index then (k, m + n) :: update_user_stocks_list t index n
         else (k, m) :: update_user_stocks_list t index n
 
-  let rec update_new_stock_list (stocks : (string * int) list) (index : string)
+  let update_new_stock_list (stocks : (string * int) list) (index : string)
       (n : int) : (string * int) list =
     let user_stocks = update_user_stocks_list stocks index n in
     if user_stocks = stocks then (index, n) :: stocks else user_stocks
 
   let subtract_and_update_balance (user : t) (index : string) (n : int) : int =
-    let ticker_price = get_ticker_price user.day index in
+    let ticker_price = Data_Impl.get_ticker_price user.day index in
     user.balance - (ticker_price * n)
 
   (** [buy user index n] user [user] buys [n] shares of a stock of index
@@ -117,4 +120,6 @@ include Data
 
   (** Iterates the user by 1 to the next day*)
   let next_day (user : t) = { user with day = user.day + 1 }
+
+  let display_username (user : t) : string = user.username
 end

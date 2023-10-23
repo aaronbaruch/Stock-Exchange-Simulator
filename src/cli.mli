@@ -1,15 +1,17 @@
 open User
-open Data
 
 module type CliType = sig
-  type t
+  module User_Impl = UserImpl
 
-  val make_user : string -> int -> User.t
-  val deposit : int -> bool
-  val withdraw : int -> bool
-  val buy : int -> bool
-  val sell : int -> bool
-  val next_day : Data.t
-  val get_stock : string -> int
-  val view_portfolio : User.t
+  val make_user : string -> int -> User_Impl.t
+  val deposit : User_Impl.t -> int -> User_Impl.t
+  val withdraw : User_Impl.t -> int -> User_Impl.t
+  val buy : User_Impl.t -> string -> int -> User_Impl.t
+  val sell : User_Impl.t -> string -> int -> User_Impl.t
+  val next_day : User_Impl.t -> User_Impl.t
+
+  (* val get_stock : string -> int *)
+  val view_portfolio : User_Impl.t -> (string * int) list
 end
+
+module Cli : CliType
