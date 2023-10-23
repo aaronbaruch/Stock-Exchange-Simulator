@@ -6,6 +6,54 @@ open Stocks
    |> eval |> print_endline; repl eval *)
 
 (*********** command line interface ***********)
+let rec concat_string_list (input : (string * int) list) : string =
+  match input with
+  | [] -> ""
+  | (s, i) :: t ->
+      string_of_int i ^ " shares of " ^ s ^ ", " ^ concat_string_list t
+
+let concat_withdraw_string (input : string) = "You withdrew $" ^ input
+let concat_deposit_string (input : string) = "You deposited $" ^ input
+
+let concat_buy_string (shares : string) (index : string) =
+  "Bought " ^ shares ^ " of " ^ index
+
+let concat_sell_string (shares : string) (index : string) =
+  "Sold " ^ shares ^ " of " ^ index
+
+let rec main user =
+  (* Offer commands *)
+  print_endline
+    "Please enter the COMMAND you would like to execute: \n\
+     \"deposit N\", \"withdraw N\", \"view\", \"buy <TICKER> <SHARES>\", \
+     \"sell <TICKER> <SHARES>\", or \"next_day\"";
+  print_string "> ";
+
+  (* Check which command was made *)
+  (* TODO: Check if user has balances (meet qualifications) and give different
+     messages *)
+  match String.split_on_char ' ' (read_line ()) with
+  | [ "deposit"; n ] ->
+      print_endline (concat_deposit_string n);
+      main (Cli.Cli.deposit user (int_of_string n))
+  | [ "withdraw"; n ] ->
+      print_endline (concat_withdraw_string n);
+      main (Cli.Cli.withdraw user (int_of_string n))
+  | [ "view" ] ->
+      print_endline "You have:";
+      print_endline (concat_string_list (Cli.Cli.view_portfolio user));
+      main user
+  | [ "buy"; x; y ] ->
+      print_endline (concat_buy_string y x);
+      main (Cli.Cli.buy user x (int_of_string y))
+  | [ "sell"; x; y ] ->
+      print_endline (concat_sell_string y x);
+      main (Cli.Cli.sell user x (int_of_string y))
+  | [ "next_day" ] ->
+      print_endline "Going to the next day!";
+      main (Cli.Cli.next_day user)
+  | _ -> failwith "Invalid argument"
+
 let () =
   print_endline "\n\nWelcome to the Market!\n";
   (* Get data *)
@@ -14,41 +62,17 @@ let () =
   (* let file = read_line () in print_endline "Reading file..."; let input =
      file |> In_channel.open_text |> In_channel.input_all in*)
   (* Get username *)
-  print_endline "Please enter the your username:";
+  print_endline "Please enter your username:";
   print_string "> ";
   let username = read_line () in
   print_endline "Reading username...";
   (* Get initial balance *)
-  print_endline "\n\nHow much money do you want to begin with?\n";
+  print_endline "\nHow much money do you want to begin with?";
   print_string "> ";
   let balance = read_int () in
   print_endline "Reading balance...";
   (* Create user *)
   let user = ref (Cli.Cli.make_user username balance) in
   print_endline "Creating user...";
-  (* Offer commands *)
-  print_endline
-    "Please enter the COMMAND you would like to execute: \n\
-     \"deposit N\", \"withdraw N\", \"view\", \"buy SHARES TICKER N\", \"sell \
-     SHARES TICKER N\", or \"next_day\"";
-  print_string "> ";
-  (* Check which command was made *)
-  match String.split_on_char ' ' (read_line ()) with
-  | [ "deposit"; n ] ->
-      print_endline "Depositing cash";
-      user := Cli.Cli.deposit !user (int_of_string n)
-  | [ "withdraw"; n ] ->
-      print_endline "Withdrawing cash";
-      user := Cli.Cli.withdraw !user (int_of_string n)
-  | [ "view" ] -> print_endline "Viewing"
-  (*View portfolio later*)
-  | [ "buy"; x; y ] ->
-      print_endline "Buying stock";
-      user := Cli.Cli.buy !user x (int_of_string y)
-  | [ "sell"; x; y ] ->
-      print_endline "Selling stock";
-      user := Cli.Cli.sell !user x (int_of_string y)
-  | [ "next_day" ] ->
-      print_endline "going to next Day!";
-      user := Cli.Cli.next_day !user
-  | _ -> failwith "Invalid argument"
+
+  main !user
