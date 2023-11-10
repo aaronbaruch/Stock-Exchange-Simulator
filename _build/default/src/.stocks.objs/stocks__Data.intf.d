@@ -1,1 +1,1 @@
-src/data.mli:
+src/data.mli: Lwt

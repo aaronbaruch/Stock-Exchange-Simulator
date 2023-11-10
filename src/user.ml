@@ -1,4 +1,6 @@
 open Data
+
+open Lwt
 (** Module defines User and functions to interact with a financial system*)
 
 module type User = sig
@@ -41,7 +43,7 @@ module UserImpl : User = struct
     day : int;
   }
 
-  module Data_Impl = DataStorage
+  module DataAPI = DataAPI
 
   (** Type representation of User, represent's a user's critical information *)
 
@@ -64,7 +66,13 @@ module UserImpl : User = struct
   let portfolio (user : t) : (string * int) list = user.stocks
 
   let able_to_buy (user : t) (index : string) (n : int) : bool =
-    let ticker_price = Data_Impl.get_ticker_price user.day index in
+    let ticker_price =
+      Lwt_main.run
+        ( DataAPI.get_ticker_price index >>= fun ticker_price_str ->
+          Lwt.return (int_of_float (float_of_string ticker_price_str)) )
+    in
+    (* Debug print statement Printf.printf "Ticker Price: %d\n" ticker_price;
+       flush stdout;*)
     ticker_price * n <= user.balance
 
   let rec update_user_stocks_list (stocks : (string * int) list)
@@ -81,7 +89,13 @@ module UserImpl : User = struct
     if user_stocks = stocks then (index, n) :: stocks else user_stocks
 
   let subtract_and_update_balance (user : t) (index : string) (n : int) : int =
-    let ticker_price = Data_Impl.get_ticker_price user.day index in
+    let ticker_price =
+      Lwt_main.run
+        ( DataAPI.get_ticker_price index >>= fun ticker_price_str ->
+          Lwt.return (int_of_float (float_of_string ticker_price_str)) )
+    in
+    (* Debug print statement Printf.printf "Ticker Price: %d\n" ticker_price;
+       flush stdout; *)
     user.balance - (ticker_price * n)
 
   (** [buy user index n] user [user] buys [n] shares of a stock of index
