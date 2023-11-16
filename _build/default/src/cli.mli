@@ -1,7 +1,9 @@
 open User
+open Data
 
 module type CliType = sig
   module User_Impl = UserImpl
+  module Data_Impl = DataAPI
 
   val make_user : string -> int -> User_Impl.t
   val deposit : User_Impl.t -> int -> User_Impl.t
@@ -13,6 +15,7 @@ module type CliType = sig
   (* val get_stock : string -> int *)
   val view_portfolio : User_Impl.t -> (string * int) list
   val view_balance : User_Impl.t -> int
+  val calculate_stock_correlation : string -> string -> int -> float
 end
 
 module Cli : CliType

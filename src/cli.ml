@@ -1,7 +1,9 @@
 open User
+open Data
 
 module type CliType = sig
   module User_Impl = UserImpl
+  module Data_Impl = DataAPI
 
   val make_user : string -> int -> User_Impl.t
   val deposit : User_Impl.t -> int -> User_Impl.t
@@ -13,10 +15,12 @@ module type CliType = sig
   (* val get_stock : User_Impl -> int -> string -> int *)
   val view_portfolio : User_Impl.t -> (string * int) list
   val view_balance : User_Impl.t -> int
+  val calculate_stock_correlation : string -> string -> int -> float
 end
 
 module Cli : CliType = struct
   module User_Impl = UserImpl
+  module Data_Impl = DataAPI
 
   let make_user (username : string) (balance : int) : User_Impl.t =
     User_Impl.init_user username balance
@@ -35,6 +39,10 @@ module Cli : CliType = struct
   (* let get_stock (index : string) = failwith "u" *)
   let view_portfolio (user : User_Impl.t) = User_Impl.portfolio user
   let view_balance (user : User_Impl.t) = User_Impl.balance user
+
+  let calculate_stock_correlation (symbol1 : string) (symbol2 : string)
+      (days : int) =
+    Lwt_main.run (Data_Impl.calculate_stock_correlation symbol1 symbol2 days)
 end
 
 (* module Cli : CliType = struct type t
