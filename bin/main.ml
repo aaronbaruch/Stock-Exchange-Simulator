@@ -71,7 +71,7 @@ let rec main user =
         main (Cli.Cli.withdraw user (int_of_string n)))
       else print_endline "Invalid input to withdraw, must be positive integer.";
       main user
-  | [ "view" ] ->
+  | [ "view_portfolio" ] ->
       print_endline "You have:";
       print_endline (concat_string_list (Cli.Cli.view_portfolio user));
       main user
