@@ -57,7 +57,9 @@ module UserImpl : User = struct
   let deposit (user : t) (n : int) = { user with balance = user.balance + n }
 
   (** [withdraw user n] decreases the user's balance by [n] dollars *)
-  let withdraw (user : t) (n : int) = { user with balance = user.balance - n }
+  let withdraw (user : t) (n : int) =
+    if user.balance - n < 0 then { user with balance = user.balance }
+    else { user with balance = user.balance - n }
 
   (** [balance user] returns an int of the user's balance *)
   let balance (user : t) : int = user.balance
@@ -116,7 +118,7 @@ module UserImpl : User = struct
       : bool =
     match stocks with
     | [] -> false
-    | (_, i) :: t -> if i > n then true else able_to_sell t index n
+    | (_, i) :: t -> if i >= n then true else able_to_sell t index n
 
   (** [sell user index n] user [user] sells [n] shares of a stock of index
       [index]. It adds to the user's balance and updates their stock portfolio.

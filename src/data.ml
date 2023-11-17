@@ -7,7 +7,7 @@ end
 
 module DataAPI : Data = struct
   let base_url = "https://www.alphavantage.co/query"
-  let api_key = "60A00BFIIHK17O27"
+  let api_key = "GRVEB2QNCNZAX221"
 
   let get_ticker_price symbol =
     let uri = Uri.of_string base_url in
@@ -37,7 +37,11 @@ module DataAPI : Data = struct
                         | Some (`String close_price) -> Lwt.return close_price
                         | _ -> Lwt.fail_with "No close price found")
                     | _ -> Lwt.fail_with "No time series data found")
-                | _ -> Lwt.fail_with "No 'Time Series (Daily)' key found")
+                | _ ->
+                    Lwt.fail_with "No 'Time Series (Daily)' key found"
+                    (* This might need to be changed, to not stop loop after
+                       invalid index TODO: PERHAPS MAKE FUNCTION HERE TO CHECK
+                       IF AN INPUT IS A VALID TICKER *))
             | _ -> Lwt.fail_with "Expected JSON object"
           in
           get_most_recent_close json
