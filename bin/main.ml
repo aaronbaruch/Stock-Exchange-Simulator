@@ -44,7 +44,8 @@ let rec main user =
   print_endline
     "Please enter the COMMAND you would like to execute: \n\
      \"deposit N\", \"withdraw N\", \"view\", \"buy <TICKER> <SHARES>\", \
-     \"sell <TICKER> <SHARES>\", \"balance\", or \"next_day\"";
+     \"sell <TICKER> <SHARES>\", \"balance\", \"correlation <TICKER> <TICKER> \
+     <DAYS>\", or \"next_day\"";
   print_string "> ";
 
   (* Check which command was made *)
@@ -107,6 +108,13 @@ let rec main user =
   | [ "balance" ] ->
       print_endline "You have: ";
       print_endline (string_of_int (Cli.Cli.view_balance user));
+      main user
+       | [ "correlation"; symbol1; symbol2; days ] ->
+      print_endline
+        ("Correlation: "
+        ^ string_of_float
+            (Cli.Cli.calculate_stock_correlation symbol1 symbol2
+               (int_of_string days)));
       main user
   | _ ->
       print_endline "Command not recognized";
