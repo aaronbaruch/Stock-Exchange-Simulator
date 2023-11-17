@@ -1,0 +1,6 @@
+description = ""
+requires = "cohttp cohttp-lwt-unix lwt lwt.unix yojson"
+archive(byte) = "stocks.cma"
+archive(native) = "stocks.cmxa"
+plugin(byte) = "stocks.cma"
+plugin(native) = "stocks.cmxs"

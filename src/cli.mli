@@ -15,6 +15,7 @@ module type CliType = sig
   (* val get_stock : string -> int *)
   val view_portfolio : User_Impl.t -> (string * int) list
   val view_balance : User_Impl.t -> int
+  val view_ledger : User_Impl.t -> User_Impl.ledger_entry list ref
   val calculate_stock_correlation : string -> string -> int -> float
 end
 

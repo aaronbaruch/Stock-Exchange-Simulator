@@ -43,9 +43,9 @@ let rec main user =
   in
   print_endline
     "Please enter the COMMAND you would like to execute: \n\
-     \"deposit N\", \"withdraw N\", \"view\", \"buy <TICKER> <SHARES>\", \
-     \"sell <TICKER> <SHARES>\", \"balance\", \"correlation <TICKER> <TICKER> \
-     <DAYS>\", or \"next_day\"";
+     \"deposit N\", \"withdraw N\", \"view_portfolio\", \"view_ledger\", \"buy \
+     <TICKER> <SHARES>\", \"sell <TICKER> <SHARES>\", \"balance\", \
+     \"correlation <TICKER> <TICKER> <DAYS>\", or \"next_day\"";
   print_string "> ";
 
   (* Check which command was made *)
@@ -74,6 +74,10 @@ let rec main user =
   | [ "view" ] ->
       print_endline "You have:";
       print_endline (concat_string_list (Cli.Cli.view_portfolio user));
+      main user
+  | [ "view_ledger" ] ->
+      print_endline "Your ledger:";
+      User.UserImpl.print_ledger (Cli.Cli.view_ledger user);
       main user
   | [ "buy"; x; y ] ->
       if input_is_int y then (
