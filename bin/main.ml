@@ -109,12 +109,15 @@ let rec main user =
       print_endline "You have: ";
       print_endline (string_of_int (Cli.Cli.view_balance user));
       main user
-       | [ "correlation"; symbol1; symbol2; days ] ->
-      print_endline
-        ("Correlation: "
-        ^ string_of_float
-            (Cli.Cli.calculate_stock_correlation symbol1 symbol2
-               (int_of_string days)));
+  | [ "correlation"; symbol1; symbol2; days ] ->
+      if input_is_int days then (
+        print_endline
+          ("Correlation: "
+          ^ string_of_float
+              (Cli.Cli.calculate_stock_correlation symbol1 symbol2
+                 (int_of_string days)));
+        main user)
+      else print_endline "Invalid input for days, must be positive integer";
       main user
   | _ ->
       print_endline "Command not recognized";
