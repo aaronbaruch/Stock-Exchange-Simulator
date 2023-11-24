@@ -45,7 +45,8 @@ let rec main user =
     "Please enter the COMMAND you would like to execute: \n\
      \"deposit N\", \"withdraw N\", \"view_portfolio\", \"view_ledger\", \"buy \
      <TICKER> <SHARES>\", \"sell <TICKER> <SHARES>\", \"balance\", \
-     \"correlation <TICKER> <TICKER> <DAYS>\", or \"next_day\"";
+     \"correlation <TICKER> <TICKER> <DAYS>\", \"news <TICKER>\", \"analytics \
+     <TICKER>\", or \"next_day\"";
   print_string "> ";
 
   (* Check which command was made *)
@@ -122,6 +123,9 @@ let rec main user =
                  (int_of_string days)));
         main user)
       else print_endline "Invalid input for days, must be positive integer";
+      main user
+  | [ "news"; symbol ] ->
+      print_endline ("Latest News: " ^ Cli.Cli.get_latest_news_feeds symbol);
       main user
   | _ ->
       print_endline "Command not recognized";

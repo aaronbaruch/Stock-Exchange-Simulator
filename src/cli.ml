@@ -17,6 +17,7 @@ module type CliType = sig
   val view_balance : User_Impl.t -> int
   val view_ledger : User_Impl.t -> User_Impl.ledger_entry list ref
   val calculate_stock_correlation : string -> string -> int -> float
+  val get_latest_news_feeds : string -> string
 end
 
 module Cli : CliType = struct
@@ -45,6 +46,18 @@ module Cli : CliType = struct
   let calculate_stock_correlation (symbol1 : string) (symbol2 : string)
       (days : int) =
     Lwt_main.run (Data_Impl.calculate_stock_correlation symbol1 symbol2 days)
+
+  let news_to_string news_list =
+    let news_string_of_tuple (title, summary, sentiment) =
+      Printf.sprintf "Title: %s\nSummary: %s\nSentiment Score: %.2f\n\n" title
+        summary sentiment
+    in
+    List.fold_left
+      (fun acc news_item -> acc ^ news_string_of_tuple news_item)
+      "" news_list
+
+  let get_latest_news_feeds (symbol : string) =
+    news_to_string (Lwt_main.run (Data_Impl.get_latest_news_feeds symbol))
 end
 
 (* module Cli : CliType = struct type t

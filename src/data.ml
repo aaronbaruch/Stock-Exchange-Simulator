@@ -4,12 +4,12 @@ open Lwt
 module type Data = sig
   val get_ticker_price : string -> string Lwt.t
   val calculate_stock_correlation : string -> string -> int -> float Lwt.t
+  val get_latest_news_feeds : string -> (string * string * float) list Lwt.t
 end
 
 module DataAPI : Data = struct
   let base_url = "https://www.alphavantage.co/query"
   let api_key = "GRVEB2QNCNZAX221"
-
 
   let get_ticker_price symbol =
     let uri = Uri.of_string base_url in
@@ -147,4 +147,63 @@ module DataAPI : Data = struct
       (take len prices1, take len prices2)
     in
     Lwt.return (pearson_correlation aligned_prices1 aligned_prices2)
+
+  let rec take n lst =
+    if n <= 0 then []
+    else
+      match lst with
+      | [] -> []
+      | x :: xs -> x :: take (n - 1) xs
+
+  let get_latest_news_feeds symbol =
+    let uri =
+      Uri.of_string
+        (base_url ^ "?function=NEWS_SENTIMENT&tickers=" ^ symbol ^ "&apikey="
+       ^ api_key)
+    in
+    Client.get uri >>= fun (resp, body) ->
+    body |> Cohttp_lwt.Body.to_string >>= fun body ->
+    match resp.status with
+    | `OK -> (
+        try
+          let json = Yojson.Basic.from_string body in
+          let extract_news_data json =
+            match json with
+            | `Assoc json_assoc -> (
+                match List.assoc_opt "feed" json_assoc with
+                | Some (`List articles) ->
+                    let first_five_articles = take 5 articles in
+                    List.map
+                      (fun article ->
+                        match article with
+                        | `Assoc article_data ->
+                            let title =
+                              match List.assoc_opt "title" article_data with
+                              | Some (`String t) -> t
+                              | _ -> "No title"
+                            in
+                            let summary =
+                              match List.assoc_opt "summary" article_data with
+                              | Some (`String s) -> s
+                              | _ -> "No summary"
+                            in
+                            let sentiment_score =
+                              match
+                                List.assoc_opt "overall_sentiment_score"
+                                  article_data
+                              with
+                              | Some (`Float s) -> s
+                              | _ -> 0.0
+                            in
+                            (title, summary, sentiment_score)
+                        | _ -> ("Invalid article format", "", 0.0))
+                      first_five_articles
+                | _ -> failwith "No 'feed' key found")
+            | _ -> failwith "Unexpected JSON structure"
+          in
+          Lwt.return (extract_news_data json)
+        with
+        | Yojson.Json_error msg -> Lwt.fail_with msg
+        | Failure msg -> Lwt.fail_with msg)
+    | _ -> Lwt.fail_with "HTTP request failed"
 end

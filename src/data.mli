@@ -6,6 +6,10 @@ module type Data = sig
   val calculate_stock_correlation : string -> string -> int -> float Lwt.t
   (** Given the ticker of two stocks, returns the correlation rate between them
       throughout the past X days*)
+
+  val get_latest_news_feeds : string -> (string * string * float) list Lwt.t
+  (** Given the ticker of a stock, returns a list of the 5 most recent news
+      articles in a (title, summary, sentiment_score) list*)
 end
 
 module DataAPI : Data
