@@ -127,6 +127,10 @@ let rec main user =
   | [ "news"; symbol ] ->
       print_endline ("Latest News: " ^ Cli.Cli.get_latest_news_feeds symbol);
       main user
+  | [ "analytics"; symbol ] ->
+      print_endline
+        ("Latest Analytics: " ^ Cli.Cli.generate_stock_summary symbol);
+      main user
   | _ ->
       print_endline "Command not recognized";
       main user

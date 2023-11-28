@@ -5,6 +5,7 @@ module type Data = sig
   val get_ticker_price : string -> string Lwt.t
   val calculate_stock_correlation : string -> string -> int -> float Lwt.t
   val get_latest_news_feeds : string -> (string * string * float) list Lwt.t
+  val generate_stock_summary : string -> string Lwt.t
 end
 
 module DataAPI : Data = struct
@@ -128,6 +129,58 @@ module DataAPI : Data = struct
     let%lwt prices = get_historical_prices symbol days in
     Lwt.return (List.map float_of_string prices)
 
+  let get_historical_volumes symbol days =
+    let uri = Uri.of_string base_url in
+    let params =
+      [
+        ("function", [ "TIME_SERIES_DAILY" ]);
+        ("outputsize", [ "full" ]);
+        ("symbol", [ symbol ]);
+        ("apikey", [ api_key ]);
+      ]
+    in
+    let uri = Uri.add_query_params uri params in
+    Client.get uri >>= fun (resp, body) ->
+    body |> Cohttp_lwt.Body.to_string >>= fun body ->
+    match resp.status with
+    | `OK -> (
+        try
+          let json = Yojson.Basic.from_string body in
+          let get_closing_vol json =
+            match json with
+            | `Assoc root_list -> (
+                match List.assoc_opt "Time Series (Daily)" root_list with
+                | Some (`Assoc time_series_list) ->
+                    let sorted_dates =
+                      List.sort
+                        (fun (d1, _) (d2, _) -> compare d2 d1)
+                        time_series_list
+                    in
+                    let rec extract_closing_vol dates acc count =
+                      match dates with
+                      | [] -> Lwt.return (List.rev acc)
+                      | (_, `Assoc vol) :: tail when count > 0 -> (
+                          match List.assoc_opt "5. volume" vol with
+                          | Some (`String close_vol) ->
+                              extract_closing_vol tail (close_vol :: acc)
+                                (count - 1)
+                          | _ -> Lwt.fail_with "No volume found")
+                      | _ -> Lwt.return (List.rev acc)
+                    in
+                    extract_closing_vol sorted_dates [] days
+                | _ -> Lwt.fail_with "No 'Time Series (Daily)' key found")
+            | _ -> Lwt.fail_with "Expected JSON object"
+          in
+          get_closing_vol json
+        with
+        | Yojson.Json_error msg -> Lwt.fail_with msg
+        | _ -> Lwt.fail_with "Unexpected error while parsing JSON")
+    | _ -> Lwt.fail_with "HTTP request failed"
+
+  let get_historical_volumes_as_float symbol days =
+    let%lwt vols = get_historical_volumes symbol days in
+    Lwt.return (List.map float_of_string vols)
+
   let take n lst =
     let rec aux n acc lst =
       if n <= 0 then List.rev acc
@@ -206,4 +259,24 @@ module DataAPI : Data = struct
         | Yojson.Json_error msg -> Lwt.fail_with msg
         | Failure msg -> Lwt.fail_with msg)
     | _ -> Lwt.fail_with "HTTP request failed"
+
+  let generate_stock_summary ticker =
+    let%lwt historical_prices = get_historical_prices_as_float ticker 365 in
+    let%lwt historical_volumes = get_historical_volumes_as_float ticker 365 in
+    let current_price = List.hd (List.rev historical_prices) in
+    let year_ago_price = List.hd historical_prices in
+    let high_price = List.fold_left max Float.min_float historical_prices in
+    let low_price = List.fold_left min Float.max_float historical_prices in
+    let average_volume = mean historical_volumes in
+    let descriptor =
+      if current_price > year_ago_price then "positive" else "negative"
+    in
+    Lwt.return
+      (Printf.sprintf
+         "The current price of %s is %.2f. Comparatively, a year ago, it was \
+          trading at %.2f. This year has been %s for %s, reaching its peak \
+          with a high of %.2f. Notably, the lowest point was with a price of \
+          %.2f. The average trading volume this year was %.2f."
+         ticker current_price year_ago_price descriptor ticker high_price
+         low_price average_volume)
 end

@@ -10,6 +10,9 @@ module type Data = sig
   val get_latest_news_feeds : string -> (string * string * float) list Lwt.t
   (** Given the ticker of a stock, returns a list of the 5 most recent news
       articles in a (title, summary, sentiment_score) list*)
+
+  val generate_stock_summary : string -> string Lwt.t
+  (** Given the ticker of a stock, returns a key analytics about the stock*)
 end
 
 module DataAPI : Data

@@ -18,6 +18,7 @@ module type CliType = sig
   val view_ledger : User_Impl.t -> User_Impl.ledger_entry list ref
   val calculate_stock_correlation : string -> string -> int -> float
   val get_latest_news_feeds : string -> string
+  val generate_stock_summary : string -> string
 end
 
 module Cli : CliType = struct
@@ -58,8 +59,10 @@ module Cli : CliType = struct
 
   let get_latest_news_feeds (symbol : string) =
     news_to_string (Lwt_main.run (Data_Impl.get_latest_news_feeds symbol))
-end
 
+  let generate_stock_summary (symbol : string) =
+    Lwt_main.run (Data_Impl.generate_stock_summary symbol)
+end
 (* module Cli : CliType = struct type t
 
    module User_Impl = UserImpl

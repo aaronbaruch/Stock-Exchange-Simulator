@@ -18,6 +18,7 @@ module type CliType = sig
   val view_ledger : User_Impl.t -> User_Impl.ledger_entry list ref
   val calculate_stock_correlation : string -> string -> int -> float
   val get_latest_news_feeds : string -> string
+  val generate_stock_summary : string -> string
 end
 
 module Cli : CliType
