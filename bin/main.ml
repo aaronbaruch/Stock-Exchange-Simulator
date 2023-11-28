@@ -6,6 +6,20 @@ open Stocks
    |> eval |> print_endline; repl eval *)
 
 (*********** command line interface ***********)
+
+let dev_mode = ref false
+
+let repl_string (dev_mode : bool) =
+  let org_string =
+    "Please enter the COMMAND you would like to execute: \n\
+     \"deposit N\", \"withdraw N\", \"view_portfolio\", \"view_ledger\", \"buy \
+     <TICKER> <SHARES>\", \"sell <TICKER> <SHARES>\", \"balance\", \
+     \"correlation <TICKER> <TICKER> <DAYS>\", \"news <TICKER>\", \"analytics \
+     <TICKER>\", or \"dev_mode\""
+  in
+  if dev_mode = false then org_string
+  else org_string ^ "\ndev_mode commands: \"next_day\""
+
 let rec concat_string_list (input : (string * int) list) : string =
   match input with
   | [] -> ""
@@ -41,14 +55,8 @@ let rec main user =
     | Some v -> if v >= 0 then true else false
     | None -> false
   in
-  print_endline
-    "Please enter the COMMAND you would like to execute: \n\
-     \"deposit N\", \"withdraw N\", \"view_portfolio\", \"view_ledger\", \"buy \
-     <TICKER> <SHARES>\", \"sell <TICKER> <SHARES>\", \"balance\", \
-     \"correlation <TICKER> <TICKER> <DAYS>\", \"news <TICKER>\", \"analytics \
-     <TICKER>\", or \"next_day\"";
+  print_endline (repl_string !dev_mode);
   print_string "> ";
-
   (* Check which command was made *)
   (* check for people trying to buy neg shares of stocks, and valid n, not able
      to adfgjnguihfs shares of stock *)
@@ -108,8 +116,12 @@ let rec main user =
         print_endline "Invalid input shares to sell, must be positive integer";
       main user
   | [ "next_day" ] ->
-      print_endline "Going to the next day!";
-      main (Cli.Cli.next_day user)
+      if !dev_mode = true then (
+        print_endline "Going to the next day!";
+        main (Cli.Cli.next_day user))
+      else (
+        print_endline "next_day is available only in dev_mode using dummy data";
+        main user)
   | [ "balance" ] ->
       print_endline "You have: ";
       print_endline (string_of_int (Cli.Cli.view_balance user));
@@ -130,6 +142,10 @@ let rec main user =
   | [ "analytics"; symbol ] ->
       print_endline
         ("Latest Analytics: " ^ Cli.Cli.generate_stock_summary symbol);
+      main user
+  | [ "dev_mode" ] ->
+      dev_mode := true;
+      print_endline "Entered Dev Mode";
       main user
   | _ ->
       print_endline "Command not recognized";

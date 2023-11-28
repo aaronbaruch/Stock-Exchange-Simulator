@@ -81,9 +81,11 @@ module UserImpl : User = struct
 
   (** [withdraw user n] decreases the user's balance by [n] dollars *)
   let withdraw (user : t) (n : int) =
-    let entry = { date = "get_date"; action = Withdraw n } in
-    user.ledger := entry :: !(user.ledger);
-    { user with balance = user.balance - n }
+    if user.balance - n < 0 then { user with balance = user.balance }
+    else
+      let entry = { date = "get_date"; action = Withdraw n } in
+      user.ledger := entry :: !(user.ledger);
+      { user with balance = user.balance - n }
 
   (** [balance user] returns an int of the user's balance *)
   let balance (user : t) : int = user.balance
