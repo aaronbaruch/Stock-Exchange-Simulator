@@ -28,6 +28,7 @@ module Cli : CliType = struct
   let make_user (username : string) (balance : int) : User_Impl.t =
     User_Impl.init_user username balance
 
+  let dev_user : User_Impl.t = User_Impl.dev_user
   let deposit (user : User_Impl.t) (n : int) = User_Impl.deposit user n
   let withdraw (user : User_Impl.t) (n : int) = User_Impl.withdraw user n
 

@@ -144,9 +144,8 @@ let rec main user =
         ("Latest Analytics: " ^ Cli.Cli.generate_stock_summary symbol);
       main user
   | [ "dev_mode" ] ->
-      dev_mode := true;
-      print_endline "Entered Dev Mode";
-      main user
+      Cli.Cli.print_endline "Entered Dev Mode";
+      user main user
   | _ ->
       print_endline "Command not recognized";
       main user

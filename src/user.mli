@@ -14,6 +14,7 @@ module type User = sig
   val next_day : t -> t
   val display_username : t -> string
   val print_ledger : ledger_entry list ref -> unit
+  val switch_dev : t -> int
 end
 
 module UserImpl : User

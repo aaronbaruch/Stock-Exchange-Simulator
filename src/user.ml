@@ -59,7 +59,7 @@ module UserImpl : User = struct
     username : string;
     balance : int;
     stocks : (string * int) list;
-    day : int;
+    days_back : int; (* 0 to 100 *)
     ledger : ledger_entry list ref;
   }
 
@@ -71,7 +71,10 @@ module UserImpl : User = struct
       [username] and initial [balance]. This user starts with an empty portfolio
       and day 0. *)
   let init_user (username : string) (balance : int) : t =
-    { username; balance; stocks = []; day = 0; ledger = ref [] }
+    { username; balance; stocks = []; days_back = -1; ledger = ref [] }
+
+  let switch_dev () : t =
+    { username; balance; stocks; days_back = 0; ledger = ref [] }
 
   (** [deposit user n] increases the user's balance by [n] dollars *)
   let deposit (user : t) (n : int) =
@@ -119,7 +122,8 @@ module UserImpl : User = struct
   let subtract_and_update_balance (user : t) (index : string) (n : int) : int =
     let ticker_price =
       Lwt_main.run
-        ( DataAPI.get_ticker_price index >>= fun ticker_price_str ->
+        ( DataAPI.get_ticker_price (index, t.days_back)
+        >>= fun ticker_price_str ->
           Lwt.return (int_of_float (float_of_string ticker_price_str)) )
     in
     (* Debug print statement Printf.printf "Ticker Price: %d\n" ticker_price;
@@ -164,7 +168,8 @@ module UserImpl : User = struct
     if able_to_sell user.stocks index n = true then (
       let ticker_price =
         Lwt_main.run
-          ( DataAPI.get_ticker_price index >>= fun ticker_price_str ->
+          ( DataAPI.get_ticker_price (index, t.days_back)
+          >>= fun ticker_price_str ->
             Lwt.return (float_of_string ticker_price_str) )
       in
       let entry =
