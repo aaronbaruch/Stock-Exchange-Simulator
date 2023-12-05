@@ -15,7 +15,7 @@ module type User = sig
   (** Type representing user. Contains fields for user info: username, balance,
       stocks, day, ledger *)
 
-  val init_user : string -> float -> t
+  val init_user : string -> float -> bool -> t
   (** [init_user username balance] creates a new user account with the given
       [username] and initial [balance]. This user starts with an empty portfolio
       and day 0. *)

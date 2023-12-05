@@ -69,7 +69,7 @@ let user_cli_suite =
     >:: portfolio_test
           [ ("AAPL", 1000) ]
           (Cli.Cli.view_portfolio (Cli.Cli.buy wealthy_user "AAPL" 1000));
-    "Buying 2 100 shares of stock"
+    "Buying 2\n   100 shares of stock"
     >:: portfolio_test
           [ ("IBM", 100); ("AAPL", 100) ]
           (Cli.Cli.view_portfolio
@@ -84,7 +84,7 @@ let user_cli_suite =
     "Buying 1 stock, not affordable"
     >:: portfolio_test []
           (Cli.Cli.view_portfolio (Cli.Cli.buy empty_user "AAPL" 1));
-    "Buying 100 stock, not affordable"
+    "Buying 100\n   stock, not affordable"
     >:: portfolio_test []
           (Cli.Cli.view_portfolio (Cli.Cli.buy empty_user "AAPL" 100));
     "Buying 100 stock, not affordable"
