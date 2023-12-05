@@ -1,7 +1,6 @@
 open User
 open Data
 
-(** Hello *)
 module type CliType = sig
   type stock_query = string * int
 
