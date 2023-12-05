@@ -1,4 +1,4 @@
-.PHONY: test 
+.PHONY: test
 
 build: 
 	OCAMLRUNPARAM=b dune build
@@ -22,3 +22,8 @@ clean: bisect-clean
 trade: 
 	OCAMLRUNPARAM=b dune exec bin/main.exe
 
+doc:
+	dune build @doc
+
+opendoc: doc
+	@bash opendoc.sh	
