@@ -53,6 +53,7 @@ module UserImpl : User = struct
   type ledger_entry = {
     date : string;
     action : action;
+    balance : float;
   }
 
   type t = {
@@ -73,17 +74,31 @@ module UserImpl : User = struct
   let init_user (username : string) (balance : float) : t =
     { username; balance; stocks = []; day = 0; ledger = ref [] }
 
+  let update_balance (user : t) (n : float) = user.balance +. n
+
   (** [deposit user n] increases the user's balance by [n] dollars *)
   let deposit (user : t) (n : float) =
-    let entry = { date = DataAPI.get_date (); action = Deposit n } in
+    let entry =
+      {
+        date = DataAPI.get_date ();
+        action = Deposit n;
+        balance = update_balance user n;
+      }
+    in
     user.ledger := entry :: !(user.ledger);
-    { user with balance = user.balance +. n }
+    { user with balance = update_balance user n }
 
   (** [withdraw user n] decreases the user's balance by [n] dollars *)
   let withdraw (user : t) (n : float) =
-    let entry = { date = DataAPI.get_date (); action = Withdraw n } in
+    let entry =
+      {
+        date = DataAPI.get_date ();
+        action = Withdraw n;
+        balance = update_balance user (-1. *. n);
+      }
+    in
     user.ledger := entry :: !(user.ledger);
-    { user with balance = user.balance -. n }
+    { user with balance = update_balance user (-1. *. n) }
 
   (** [balance user] returns an int of the user's balance *)
   let balance (user : t) : float = user.balance
@@ -116,17 +131,6 @@ module UserImpl : User = struct
     let user_stocks = update_user_stocks_list stocks index n in
     if user_stocks = stocks then (index, n) :: stocks else user_stocks
 
-  let subtract_and_update_balance (user : t) (index : string) (n : int) : float
-      =
-    let ticker_price =
-      Lwt_main.run
-        ( DataAPI.get_ticker_price index >>= fun ticker_price_str ->
-          Lwt.return (float_of_string ticker_price_str) )
-    in
-    (* Debug print statement Printf.printf "Ticker Price: %d\n" ticker_price;
-       flush stdout; *)
-    user.balance -. (ticker_price *. float_of_int n)
-
   (** [buy user index n] user [user] buys [n] shares of a stock of index
       [index]. It deducts the cost from the user's balance and updates their
       stock portfolio. Returns either the original [user] as the input if the
@@ -139,14 +143,19 @@ module UserImpl : User = struct
           ( DataAPI.get_ticker_price index >>= fun ticker_price_str ->
             Lwt.return (float_of_string ticker_price_str) )
       in
+      let cost = ticker_price *. float_of_int n in
       let entry =
-        { date = DataAPI.get_date (); action = Buy (index, n, ticker_price) }
+        {
+          date = DataAPI.get_date ();
+          action = Buy (index, n, ticker_price);
+          balance = update_balance user (-1. *. cost);
+        }
       in
       user.ledger := entry :: !(user.ledger);
       {
         user with
         stocks = update_new_stock_list user.stocks index n;
-        balance = subtract_and_update_balance user index n;
+        balance = update_balance user (-1. *. cost);
       })
     else user
 
@@ -168,14 +177,19 @@ module UserImpl : User = struct
           ( DataAPI.get_ticker_price index >>= fun ticker_price_str ->
             Lwt.return (float_of_string ticker_price_str) )
       in
+      let revenue = ticker_price *. float_of_int n in
       let entry =
-        { date = DataAPI.get_date (); action = Sell (index, n, ticker_price) }
+        {
+          date = DataAPI.get_date ();
+          action = Sell (index, n, ticker_price);
+          balance = update_balance user revenue;
+        }
       in
       user.ledger := entry :: !(user.ledger);
       {
         user with
         stocks = update_user_stocks_list user.stocks index (-1 * n);
-        balance = subtract_and_update_balance user index (-1 * n);
+        balance = update_balance user revenue;
       })
     else user
 
@@ -184,19 +198,23 @@ module UserImpl : User = struct
 
   let display_username (user : t) : string = user.username
 
-  let print_ledger ledger =
+  let print_ledger (ledger : ledger_entry list ref) : unit =
     List.iter
       (fun entry ->
         match entry.action with
         | Buy (ticker, shares, price) ->
-            Printf.printf "Date: %s, Buy %d shares of %s at $%.2f\n" entry.date
-              shares ticker price
+            Printf.printf
+              "Date: %s, Buy %d shares of %s at $%.2f, Balance: $%.2f\n"
+              entry.date shares ticker price entry.balance
         | Sell (ticker, shares, price) ->
-            Printf.printf "Date: %s, Sell %d shares of %s at $%.2f\n" entry.date
-              shares ticker price
+            Printf.printf
+              "Date: %s, Sell %d shares of %s at $%.2f, Balance: $%.2f\n"
+              entry.date shares ticker price entry.balance
         | Deposit amount ->
-            Printf.printf "Date: %s, Deposit $%.2f\n" entry.date amount
+            Printf.printf "Date: %s, Deposit $%.2f, Balance: $%.2f\n" entry.date
+              amount entry.balance
         | Withdraw amount ->
-            Printf.printf "Date: %s, Withdraw $%.2f\n" entry.date amount)
+            Printf.printf "Date: %s, Withdraw $%.2f, Balance: $%.2f\n"
+              entry.date amount entry.balance)
       !ledger
 end
