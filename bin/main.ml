@@ -20,26 +20,45 @@ let repl_string (dev_mode : bool) =
   if dev_mode = false then org_string
   else org_string ^ "\ndev_mode commands: \"next_day\""
 
+let round_to_two_decimal_places (num : float) : float =
+  let multiplier = 10.0 ** 2.0 in
+  Float.round (num *. multiplier) /. multiplier
+
+let format_dollar_string (input : string) : string =
+  match Float.of_string_opt input with
+  | Some value ->
+      let rounded_value = round_to_two_decimal_places value in
+      let formatted_string = Printf.sprintf "$%.2f" rounded_value in
+      formatted_string
+  | None ->
+      (* Invalid input, return the original string *)
+      input
+
 let rec concat_string_list (input : (string * int) list) : string =
   match input with
   | [] -> ""
   | (s, i) :: t ->
       string_of_int i ^ " shares of " ^ s ^ ", " ^ concat_string_list t
 
-let concat_withdraw_string (input : string) = "You withdrew $" ^ input
+let concat_withdraw_string (input : string) =
+  "You withdrew " ^ format_dollar_string input
 
 let concat_withdraw_failure_string (input1 : string) (input2 : string) =
-  "Cannot withdraw $" ^ input1 ^ " from $" ^ input2
+  "Cannot withdraw "
+  ^ format_dollar_string input1
+  ^ " from "
+  ^ format_dollar_string input2
 
-let concat_deposit_string (input : string) = "You deposited $" ^ input
+let concat_deposit_string (input : string) =
+  "You deposited " ^ format_dollar_string input
 
 let concat_buy_string (shares : string) (index : string) =
   "Bought " ^ shares ^ " of " ^ index
 
 let concat_buy_failure_string (index : string) (shares : string)
     (balance : string) =
-  "Cannot buy " ^ shares ^ " shares of " ^ index ^ ", cost more than $"
-  ^ balance
+  "Cannot buy " ^ shares ^ " shares of " ^ index ^ ", cost more than "
+  ^ format_dollar_string balance
 
 let concat_sell_string (shares : string) (index : string) =
   "Sold " ^ shares ^ " of " ^ index
@@ -50,6 +69,11 @@ let concat_sell_failure_string (shares : string) (index : string)
 
 let rec main user =
   (* Offer commands *)
+  let input_is_float (n : string) =
+    match float_of_string_opt n with
+    | Some v -> if v >= 0. then true else false
+    | None -> false
+  in
   let input_is_int (n : string) =
     match int_of_string_opt n with
     | Some v -> if v >= 0 then true else false
@@ -62,22 +86,22 @@ let rec main user =
      to adfgjnguihfs shares of stock *)
   match String.split_on_char ' ' (read_line ()) with
   | [ "deposit"; n ] ->
-      if input_is_int n then (
+      if input_is_float n then (
         print_endline (concat_deposit_string n);
-        main (Cli.Cli.deposit user (int_of_string n)))
+        main (Cli.Cli.deposit user (float_of_string n)))
       else print_endline "Invalid input to deposit, must be positive integer.";
       main user
   | [ "withdraw"; n ] ->
-      if input_is_int n then (
+      if input_is_float n then (
         if
           Cli.Cli.view_balance user
-          = Cli.Cli.view_balance (Cli.Cli.withdraw user (int_of_string n))
+          = Cli.Cli.view_balance (Cli.Cli.withdraw user (float_of_string n))
         then
           print_endline
             (concat_withdraw_failure_string n
-               (string_of_int (Cli.Cli.view_balance user)))
+               (string_of_float (Cli.Cli.view_balance user)))
         else print_endline (concat_withdraw_string n);
-        main (Cli.Cli.withdraw user (int_of_string n)))
+        main (Cli.Cli.withdraw user (float_of_string n)))
       else print_endline "Invalid input to withdraw, must be positive integer.";
       main user
   | [ "view_portfolio" ] ->
@@ -96,7 +120,7 @@ let rec main user =
         then
           print_endline
             (concat_buy_failure_string x y
-               (string_of_int (Cli.Cli.view_balance user)))
+               (string_of_float (Cli.Cli.view_balance user)))
         else print_endline (concat_buy_string y x);
         main (Cli.Cli.buy user x (int_of_string y)))
       else print_endline "Invalid input shares to buy, must be positive integer";
@@ -124,7 +148,8 @@ let rec main user =
         main user)
   | [ "balance" ] ->
       print_endline "You have: ";
-      print_endline (string_of_int (Cli.Cli.view_balance user));
+      print_endline
+        (format_dollar_string (string_of_float (Cli.Cli.view_balance user)));
       main user
   | [ "correlation"; symbol1; symbol2; days ] ->
       if input_is_int days then (
@@ -152,8 +177,8 @@ let rec main user =
       main user
 
 let rec wrong_val_loop () =
-  match read_int_opt () with
-  | Some v -> v
+  match read_float_opt () with
+  | Some v -> round_to_two_decimal_places v
   | None ->
       print_endline
         "\nInvalid balance input, retry with input Integer value of money";

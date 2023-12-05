@@ -10,16 +10,16 @@ module type User = sig
   type t
   (** Type representing user*)
 
-  val init_user : string -> int -> t
+  val init_user : string -> float -> t
   (** Initialize User *)
 
-  val deposit : t -> int -> t
+  val deposit : t -> float -> t
   (** Deposit money into user's account *)
 
-  val withdraw : t -> int -> t
+  val withdraw : t -> float -> t
   (** Withdraw money from user's account *)
 
-  val balance : t -> int
+  val balance : t -> float
   (** Check balance of user's account*)
 
   val portfolio : t -> (string * int) list
@@ -47,8 +47,8 @@ module UserImpl : User = struct
         string * int * float (* Ticker, Number of shares, Price per share *)
     | Sell of
         string * int * float (* Ticker, Number of shares, Price per share *)
-    | Deposit of int
-    | Withdraw of int
+    | Deposit of float
+    | Withdraw of float
 
   type ledger_entry = {
     date : string;
@@ -57,7 +57,7 @@ module UserImpl : User = struct
 
   type t = {
     username : string;
-    balance : int;
+    balance : float;
     stocks : (string * int) list;
     day : int;
     ledger : ledger_entry list ref;
@@ -70,23 +70,23 @@ module UserImpl : User = struct
   (** [init_user username balance] creates a new user account with the given
       [username] and initial [balance]. This user starts with an empty portfolio
       and day 0. *)
-  let init_user (username : string) (balance : int) : t =
+  let init_user (username : string) (balance : float) : t =
     { username; balance; stocks = []; day = 0; ledger = ref [] }
 
   (** [deposit user n] increases the user's balance by [n] dollars *)
-  let deposit (user : t) (n : int) =
+  let deposit (user : t) (n : float) =
     let entry = { date = DataAPI.get_date (); action = Deposit n } in
     user.ledger := entry :: !(user.ledger);
-    { user with balance = user.balance + n }
+    { user with balance = user.balance +. n }
 
   (** [withdraw user n] decreases the user's balance by [n] dollars *)
-  let withdraw (user : t) (n : int) =
+  let withdraw (user : t) (n : float) =
     let entry = { date = DataAPI.get_date (); action = Withdraw n } in
     user.ledger := entry :: !(user.ledger);
-    { user with balance = user.balance - n }
+    { user with balance = user.balance -. n }
 
   (** [balance user] returns an int of the user's balance *)
-  let balance (user : t) : int = user.balance
+  let balance (user : t) : float = user.balance
 
   (** [balance user] returns an (string,int) list of the user's portfolio. *)
   let portfolio (user : t) : (string * int) list = user.stocks
@@ -97,11 +97,11 @@ module UserImpl : User = struct
     let ticker_price =
       Lwt_main.run
         ( DataAPI.get_ticker_price index >>= fun ticker_price_str ->
-          Lwt.return (int_of_float (float_of_string ticker_price_str)) )
+          Lwt.return (float_of_string ticker_price_str) )
     in
     (* Debug print statement Printf.printf "Ticker Price: %d\n" ticker_price;
        flush stdout;*)
-    ticker_price * n <= user.balance
+    ticker_price *. float_of_int n <= user.balance
 
   let rec update_user_stocks_list (stocks : (string * int) list)
       (index : string) (n : int) : (string * int) list =
@@ -116,15 +116,16 @@ module UserImpl : User = struct
     let user_stocks = update_user_stocks_list stocks index n in
     if user_stocks = stocks then (index, n) :: stocks else user_stocks
 
-  let subtract_and_update_balance (user : t) (index : string) (n : int) : int =
+  let subtract_and_update_balance (user : t) (index : string) (n : int) : float
+      =
     let ticker_price =
       Lwt_main.run
         ( DataAPI.get_ticker_price index >>= fun ticker_price_str ->
-          Lwt.return (int_of_float (float_of_string ticker_price_str)) )
+          Lwt.return (float_of_string ticker_price_str) )
     in
     (* Debug print statement Printf.printf "Ticker Price: %d\n" ticker_price;
        flush stdout; *)
-    user.balance - (ticker_price * n)
+    user.balance -. (ticker_price *. float_of_int n)
 
   (** [buy user index n] user [user] buys [n] shares of a stock of index
       [index]. It deducts the cost from the user's balance and updates their
@@ -194,8 +195,8 @@ module UserImpl : User = struct
             Printf.printf "Date: %s, Sell %d shares of %s at $%.2f\n" entry.date
               shares ticker price
         | Deposit amount ->
-            Printf.printf "Date: %s, Deposit $%d\n" entry.date amount
+            Printf.printf "Date: %s, Deposit $%.2f\n" entry.date amount
         | Withdraw amount ->
-            Printf.printf "Date: %s, Withdraw $%d\n" entry.date amount)
+            Printf.printf "Date: %s, Withdraw $%.2f\n" entry.date amount)
       !ledger
 end
