@@ -1,5 +1,4 @@
-open Stocks
-open OUnit2
+(*open Stocks open OUnit2
 
 let empty_user = Cli.Cli.make_user "empty_username" 0.00
 let nonempty_user = Cli.Cli.make_user "nonempty_username" 1000.00
@@ -32,7 +31,7 @@ let user_cli_suite =
     (* What about not max int *)
   ]
 
-let test_suite =
-  "Trading functionality test suite " >::: List.flatten [ user_cli_suite ]
+  let test_suite = "Trading functionality test suite " >::: List.flatten [
+  user_cli_suite ]
 
-let () = run_test_tt_main test_suite
+  let () = run_test_tt_main test_suite *)

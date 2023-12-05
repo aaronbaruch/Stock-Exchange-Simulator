@@ -3,7 +3,7 @@ module type User = sig
   type ledger_entry
   type t
 
-  val init_user : string -> int -> bool -> t
+  val init_user : string -> float -> bool -> t
   val deposit : t -> float -> t
   val withdraw : t -> float -> t
   val balance : t -> float

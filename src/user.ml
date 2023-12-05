@@ -10,7 +10,7 @@ module type User = sig
   type t
   (** Type representing user*)
 
-  val init_user : string -> float -> t
+  val init_user : string -> float -> bool -> t
   (** Initialize User *)
 
   val deposit : t -> float -> t
@@ -61,7 +61,7 @@ module UserImpl : User = struct
     username : string;
     balance : float;
     stocks : (string * int) list;
-    day : int;
+    days_back : int;
     ledger : ledger_entry list ref;
   }
 

@@ -8,9 +8,9 @@ module type CliType = sig
   module User_Impl = UserImpl
   module Data_Impl = DataAPI
 
-  val make_user : string -> int -> bool -> User_Impl.t
-  val deposit : User_Impl.t -> int -> User_Impl.t
-  val withdraw : User_Impl.t -> int -> User_Impl.t
+  val make_user : string -> float -> bool -> User_Impl.t
+  val deposit : User_Impl.t -> float -> User_Impl.t
+  val withdraw : User_Impl.t -> float -> User_Impl.t
   val buy : User_Impl.t -> string -> int -> User_Impl.t
   val sell : User_Impl.t -> string -> int -> User_Impl.t
   val next_day : User_Impl.t -> User_Impl.t
