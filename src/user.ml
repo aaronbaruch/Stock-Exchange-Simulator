@@ -1,43 +1,62 @@
 open Data
-
 open Lwt
-(** Module defines User and functions to interact with a financial system*)
 
+(** Module defines User and functions to interact with a financial system*)
 module type User = sig
   type action
+  (** Type representing an action that the user can perform: Buy, Sell, Deposit,
+      or Withdraw *)
+
   type ledger_entry
+  (** Type representing a ledger_entry. Constains fields for date, action, and
+      balance *)
 
   type t
-  (** Type representing user*)
+  (** Type representing user. Contains fields for user info: username, balance,
+      stocks, day, ledger *)
 
   val init_user : string -> float -> t
-  (** Initialize User *)
+  (** [init_user username balance] creates a new user account with the given
+      [username] and initial [balance]. This user starts with an empty portfolio
+      and day 0. *)
 
   val deposit : t -> float -> t
-  (** Deposit money into user's account *)
+  (** [deposit user n] increases the user's balance by [n] dollars *)
 
   val withdraw : t -> float -> t
-  (** Withdraw money from user's account *)
+  (** [withdraw user n] decreases the user's balance by [n] dollars *)
 
   val balance : t -> float
-  (** Check balance of user's account*)
+  (** [balance user] returns a float of the user's balance *)
 
   val portfolio : t -> (string * int) list
-  (** Check Portfolio of user's account*)
+  (** [balance user] returns an (string, int) list of the user's portfolio. *)
 
   val ledger : t -> ledger_entry list ref
+  (** [ledger user] returns a list of ledger_entry *)
 
   val sell : t -> string -> int -> t
-  (** Sell stocks from User's portfolio *)
+  (** [sell user index n] user [user] sells [n] shares of a stock of index
+      [index]. It adds to the user's balance and updates their stock portfolio.
+      Returns either the original [user] as the input if the stock could not be
+      sold (trying to sell stock they don't have). Returns the edited user with
+      sold stock if the stock could be sold.*)
 
   val buy : t -> string -> int -> t
-  (** Buy stocks for User's portfolio *)
+  (** [buy user index n] user [user] buys [n] shares of a stock of index
+      [index]. It deducts the cost from the user's balance and updates their
+      stock portfolio. Returns either the original [user] as the input if the
+      stock could not be bought. Returns the edited user with bought stock if
+      the stock could be bought.*)
 
   val next_day : t -> t
-  (** Move the user to the next day *)
+  (** [next_day user] iterates the user by 1 to the next day*)
 
   val display_username : t -> string
+  (** [display_username user] returns the string of the username *)
+
   val print_ledger : ledger_entry list ref -> unit
+  (** [print_ledger ledger] prints the given ledger *)
 end
 
 (** Implementation of User *)
@@ -66,14 +85,13 @@ module UserImpl : User = struct
 
   module DataAPI = DataAPI
 
-  (** Type representation of User, represent's a user's critical information *)
-
   (** [init_user username balance] creates a new user account with the given
       [username] and initial [balance]. This user starts with an empty portfolio
       and day 0. *)
   let init_user (username : string) (balance : float) : t =
     { username; balance; stocks = []; day = 0; ledger = ref [] }
 
+  (** [update_balance user n] updates the User's balance *)
   let update_balance (user : t) (n : float) = user.balance +. n
 
   (** [deposit user n] increases the user's balance by [n] dollars *)
@@ -100,14 +118,17 @@ module UserImpl : User = struct
     user.ledger := entry :: !(user.ledger);
     { user with balance = update_balance user (-1. *. n) }
 
-  (** [balance user] returns an int of the user's balance *)
+  (** [balance user] returns a float of the user's balance *)
   let balance (user : t) : float = user.balance
 
-  (** [balance user] returns an (string,int) list of the user's portfolio. *)
+  (** [balance user] returns an (string, int) list of the user's portfolio. *)
   let portfolio (user : t) : (string * int) list = user.stocks
 
+  (** [ledger user] returns a list of ledger_entry *)
   let ledger (user : t) = user.ledger
 
+  (** [able_to_buy user index n] checks if the user is able to buy a certain
+      stock *)
   let able_to_buy (user : t) (index : string) (n : int) : bool =
     let ticker_price =
       Lwt_main.run
@@ -118,6 +139,7 @@ module UserImpl : User = struct
        flush stdout;*)
     ticker_price *. float_of_int n <= user.balance
 
+  (** [update_user_stocks_list stocks index n] updates the user's list of stocks*)
   let rec update_user_stocks_list (stocks : (string * int) list)
       (index : string) (n : int) : (string * int) list =
     match stocks with
@@ -126,6 +148,7 @@ module UserImpl : User = struct
         if k = index then (k, m + n) :: update_user_stocks_list t index n
         else (k, m) :: update_user_stocks_list t index n
 
+  (** [update_new_stocks_list stocks index n] updates the new list of stocks*)
   let update_new_stock_list (stocks : (string * int) list) (index : string)
       (n : int) : (string * int) list =
     let user_stocks = update_user_stocks_list stocks index n in
@@ -159,6 +182,8 @@ module UserImpl : User = struct
       })
     else user
 
+  (** [able_to_sell stocks index n] checks if the user is able to buy a certain
+      stock *)
   let rec able_to_sell (stocks : (string * int) list) (index : string) (n : int)
       : bool =
     match stocks with
@@ -193,11 +218,13 @@ module UserImpl : User = struct
       })
     else user
 
-  (** Iterates the user by 1 to the next day*)
+  (** [next_day user] iterates the user by 1 to the next day*)
   let next_day (user : t) = { user with day = user.day + 1 }
 
+  (** [display_username user] returns the string of the username *)
   let display_username (user : t) : string = user.username
 
+  (** [print_ledger ledger] prints the given ledger *)
   let print_ledger (ledger : ledger_entry list ref) : unit =
     List.iter
       (fun entry ->

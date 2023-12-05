@@ -5,7 +5,11 @@ open Lwt
 
 module type User = sig
   type action
+  (** Type representing an action that the user can perform: Buy, Sell, Deposit,
+      or Withdraw *)
   type ledger_entry
+  (** Type representing a ledger_entry. Constains fields for date, action, and
+      balance *)
 
   type t
   (** Type representing user*)
@@ -42,6 +46,8 @@ end
 
 (** Implementation of User *)
 module UserImpl : User = struct
+  (** Type representing an action that the user can perform: Buy, Sell, Deposit,
+      or Withdraw *)
   type action =
     | Buy of
         string * int * float (* Ticker, Number of shares, Price per share *)
@@ -55,6 +61,8 @@ module UserImpl : User = struct
     action : action;
     balance : float;
   }
+  (** Type representing a ledger_entry. Constains fields for date, action, and
+      balance *)
 
   type t = {
     username : string;
@@ -63,10 +71,9 @@ module UserImpl : User = struct
     day : int;
     ledger : ledger_entry list ref;
   }
+  (** Type representing user *)
 
   module DataAPI = DataAPI
-
-  (** Type representation of User, represent's a user's critical information *)
 
   (** [init_user username balance] creates a new user account with the given
       [username] and initial [balance]. This user starts with an empty portfolio
@@ -74,6 +81,7 @@ module UserImpl : User = struct
   let init_user (username : string) (balance : float) : t =
     { username; balance; stocks = []; day = 0; ledger = ref [] }
 
+  (** [update_balance user n] updates the User's balance *)
   let update_balance (user : t) (n : float) = user.balance +. n
 
   (** [deposit user n] increases the user's balance by [n] dollars *)
@@ -100,12 +108,13 @@ module UserImpl : User = struct
     user.ledger := entry :: !(user.ledger);
     { user with balance = update_balance user (-1. *. n) }
 
-  (** [balance user] returns an int of the user's balance *)
+  (** [balance user] returns a float of the user's balance *)
   let balance (user : t) : float = user.balance
 
-  (** [balance user] returns an (string,int) list of the user's portfolio. *)
+  (** [balance user] returns an (string, int) list of the user's portfolio. *)
   let portfolio (user : t) : (string * int) list = user.stocks
 
+  (** *)
   let ledger (user : t) = user.ledger
 
   let able_to_buy (user : t) (index : string) (n : int) : bool =

@@ -1,1 +1,1 @@
-src/cli.pp.mli: Data DataAPI User UserImpl
+src/cli.pp.mli: Data User
