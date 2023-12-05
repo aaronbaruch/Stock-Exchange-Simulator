@@ -19,7 +19,6 @@ module type CliType = sig
   val calculate_stock_correlation : string -> string -> int -> float
   val get_latest_news_feeds : string -> string
   val generate_stock_summary : string -> string
-  val dev_user : User_Impl.t
 end
 
 module Cli : CliType
