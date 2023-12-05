@@ -1,0 +1,123 @@
+# dune exec bin/main.exe
+# OCAMLPARAM: unset
+# Shared cache: disabled
+# Workspace root: /Users/aarbaruch/cs3110/3110-final-project
+# Auto-detected concurrency: 8
+$ /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/jg/w975md5568q2r3rx3vnt56jm0000gp/T/dune_a220bc_output
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Dev
+#  ; merlin = true
+#  ; for_host = None
+#  ; fdo_target_exe = None
+#  ; build_dir = In_build_dir "default"
+#  ; ocaml_bin = External "/Users/aarbaruch/.opam/cs3110-2023fa/bin"
+#  ; ocaml = Ok External "/Users/aarbaruch/.opam/cs3110-2023fa/bin/ocaml"
+#  ; ocamlc = External "/Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlc.opt"
+#  ; ocamlopt =
+#      Ok External "/Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlopt.opt"
+#  ; ocamldep =
+#      Ok External "/Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamldep.opt"
+#  ; ocamlmklib =
+#      Ok External "/Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlmklib.opt"
+#  ; env =
+#      map
+#        { "DUNE_OCAML_HARDCODED" :
+#            "/Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml:/Users/aarbaruch/.opam/cs3110-2023fa/lib"
+#        ; "DUNE_OCAML_STDLIB" :
+#            "/Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml"
+#        ; "DUNE_SOURCEROOT" : "/Users/aarbaruch/cs3110/3110-final-project"
+#        ; "INSIDE_DUNE" :
+#            "/Users/aarbaruch/cs3110/3110-final-project/_build/default"
+#        ; "OCAMLFIND_IGNORE_DUPS_IN" :
+#            "/Users/aarbaruch/cs3110/3110-final-project/_build/install/default/lib"
+#        ; "OCAMLPATH" :
+#            "/Users/aarbaruch/cs3110/3110-final-project/_build/install/default/lib"
+#        ; "OCAMLTOP_INCLUDE_PATH" :
+#            "/Users/aarbaruch/cs3110/3110-final-project/_build/install/default/lib/toplevel"
+#        ; "OCAML_COLOR" : "always"
+#        ; "OPAMCOLOR" : "always"
+#        }
+#  ; findlib_paths =
+#      [ External "/Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml"
+#      ; External "/Users/aarbaruch/.opam/cs3110-2023fa/lib"
+#      ]
+#  ; natdynlink_supported = true
+#  ; supports_shared_libraries = true
+#  ; ocaml_config =
+#      { version = "5.0.0"
+#      ; standard_library_default =
+#          "/Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml"
+#      ; standard_library = "/Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml"
+#      ; standard_runtime = "the_standard_runtime_variable_was_deleted"
+#      ; ccomp_type = "cc"
+#      ; c_compiler = "cc"
+#      ; ocamlc_cflags =
+#          [ "-O2"; "-fno-strict-aliasing"; "-fwrapv"; "-pthread" ]
+#      ; ocamlc_cppflags = [ "-D_FILE_OFFSET_BITS=64" ]
+#      ; ocamlopt_cflags =
+#          [ "-O2"; "-fno-strict-aliasing"; "-fwrapv"; "-pthread" ]
+#      ; ocamlopt_cppflags = [ "-D_FILE_OFFSET_BITS=64" ]
+#      ; bytecomp_c_compiler =
+#          [ "cc"
+#          ; "-O2"
+#          ; "-fno-strict-aliasing"
+#          ; "-fwrapv"
+#          ; "-pthread"
+#          ; "-D_FILE_OFFSET_BITS=64"
+#          ]
+#      ; bytecomp_c_libraries = [ "-lm"; "-lpthread" ]
+#      ; native_c_compiler =
+#          [ "cc"
+#          ; "-O2"
+#          ; "-fno-strict-aliasing"
+#          ; "-fwrapv"
+#          ; "-pthread"
+#          ; "-D_FILE_OFFSET_BITS=64"
+#          ]
+#      ; native_c_libraries = [ "-lm"; "-lpthread" ]
+#      ; native_pack_linker = [ "ld"; "-r"; "-o" ]
+#      ; cc_profile = []
+#      ; architecture = "arm64"
+#      ; model = "default"
+#      ; int_size = 63
+#      ; word_size = 64
+#      ; system = "macosx"
+#      ; asm = [ "cc"; "-c"; "-Wno-trigraphs" ]
+#      ; asm_cfi_supported = true
+#      ; with_frame_pointers = false
+#      ; ext_exe = ""
+#      ; ext_obj = ".o"
+#      ; ext_asm = ".s"
+#      ; ext_lib = ".a"
+#      ; ext_dll = ".so"
+#      ; os_type = "Unix"
+#      ; default_executable_name = "a.out"
+#      ; systhread_supported = true
+#      ; host = "aarch64-apple-darwin22.5.0"
+#      ; target = "aarch64-apple-darwin22.5.0"
+#      ; profiling = false
+#      ; flambda = false
+#      ; spacetime = false
+#      ; safe_string = true
+#      ; exec_magic_number = "Caml1999X032"
+#      ; cmi_magic_number = "Caml1999I032"
+#      ; cmo_magic_number = "Caml1999O032"
+#      ; cma_magic_number = "Caml1999A032"
+#      ; cmx_magic_number = "Caml1999Y032"
+#      ; cmxa_magic_number = "Caml1999Z032"
+#      ; ast_impl_magic_number = "Caml1999M032"
+#      ; ast_intf_magic_number = "Caml1999N032"
+#      ; cmxs_magic_number = "Caml1999D032"
+#      ; cmt_magic_number = "Caml1999T032"
+#      ; natdynlink_supported = true
+#      ; supports_shared_libraries = true
+#      ; windows_unicode = false
+#      }
+#  }
+$ (cd _build/.sandbox/3f89d12b76b520d098caf2ca4123bde7/default && .ppx/bcab0be011c28261c514e69f4fe141f8/ppx.exe --cookie 'library-name="stocks"' -o src/user.pp.ml --impl src/user.ml -corrected-suffix .ppx-corrected -diff-cmd - -dump-ast)
+$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamldep.opt -modules -impl src/user.pp.ml) > _build/default/src/.stocks.objs/stocks__User.impl.d
+$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.stocks.objs/byte -I src/.stocks.objs/native -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/angstrom -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/asn1-combinators -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/astring -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/base64 -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/bigstringaf -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/bos -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/bytes -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ca-certs -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/cohttp -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/cohttp-lwt -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/cohttp-lwt-unix -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/conduit -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/conduit-lwt -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/conduit-lwt-unix -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/cstruct -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/domain-name -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/duration -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/eqaf -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/eqaf/bigstring -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/eqaf/cstruct -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/fmt -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/fpath -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/gmap -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/hkdf -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ipaddr -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ipaddr-sexp -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ipaddr/unix -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/logs -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/lwt -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/lwt/unix -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/lwt_ssl -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/macaddr -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/magic-mime -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto-ec -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto-pk -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto-rng -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto-rng-lwt -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto-rng/unix -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/mtime -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/mtime/clock/os -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml/threads -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml/unix -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ocplib-endian -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ocplib-endian/bigstring -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/parsexp -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/pbkdf -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ppx_sexp_conv/runtime-lib -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ptime -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ptime/clock/os -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/re -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/rresult -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/seq -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/sexplib -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/sexplib0 -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ssl -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/stringext -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/tls -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/tls-lwt -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/uri -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/uri-sexp -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/uri/services -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/x509 -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/yojson -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/zarith -intf-suffix .ml -no-alias-deps -opaque -open Stocks -o src/.stocks.objs/native/stocks__User.cmx -c -impl src/user.pp.ml)
+$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o src/stocks.cmxa src/.stocks.objs/native/stocks.cmx src/.stocks.objs/native/stocks__Data.cmx src/.stocks.objs/native/stocks__User.cmx src/.stocks.objs/native/stocks__Cli.cmx)
+$ (cd _build/default && /Users/aarbaruch/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o bin/main.exe /Users/aarbaruch/.opam/cs3110-2023fa/lib/fmt/fmt.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/logs/logs.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/lwt/lwt.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/logs/logs_lwt.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/sexplib0/sexplib0.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/parsexp/parsexp.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/sexplib/sexplib.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/macaddr/macaddr.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/domain-name/domain_name.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/ipaddr/ipaddr.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/ppx_sexp_conv/runtime-lib/ppx_sexp_conv_lib.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/ipaddr-sexp/ipaddr_sexp.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/stringext/stringext.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/bigstringaf/bigstringaf.cmxa -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/bigstringaf /Users/aarbaruch/.opam/cs3110-2023fa/lib/angstrom/angstrom.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/uri/uri.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/astring/astring.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/conduit/conduit.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/conduit-lwt/conduit_lwt.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/magic-mime/magic_mime_library.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/ocplib-endian/ocplib_endian.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/ocplib-endian/bigstring/ocplib_endian_bigstring.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml/unix/unix.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/ocaml/threads/threads.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/lwt/unix/lwt_unix.cmxa -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/lwt/unix /Users/aarbaruch/.opam/cs3110-2023fa/lib/uri/services/uri_services.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/ipaddr/unix/ipaddr_unix.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/ssl/ssl.cmxa -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ssl /Users/aarbaruch/.opam/cs3110-2023fa/lib/lwt_ssl/lwt_ssl.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/cstruct/cstruct.cmxa -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/cstruct /Users/aarbaruch/.opam/cs3110-2023fa/lib/eqaf/eqaf.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/eqaf/bigstring/eqaf_bigstring.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/eqaf/cstruct/eqaf_cstruct.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto/mirage_crypto.cmxa -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto /Users/aarbaruch/.opam/cs3110-2023fa/lib/hkdf/hkdf.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto-rng/mirage_crypto_rng.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/zarith/zarith.cmxa -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/zarith /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto-pk/mirage_crypto_pk.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/ptime/ptime.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/asn1-combinators/asn1_combinators.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/gmap/gmap.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/base64/base64.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto-ec/mirage_crypto_ec.cmxa -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto-ec /Users/aarbaruch/.opam/cs3110-2023fa/lib/pbkdf/pbkdf.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/x509/x509.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/tls/tls.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/ptime/clock/os/ptime_clock.cmxa -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ptime/clock/os /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto-rng/unix/mirage_crypto_rng_unix.cmxa -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto-rng/unix /Users/aarbaruch/.opam/cs3110-2023fa/lib/duration/duration.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/mtime/mtime.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/mtime/clock/os/mtime_clock.cmxa -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/mtime/clock/os /Users/aarbaruch/.opam/cs3110-2023fa/lib/mirage-crypto-rng-lwt/mirage_crypto_rng_lwt.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/tls-lwt/tls_lwt.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/rresult/rresult.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/fpath/fpath.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/bos/bos.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/ca-certs/ca_certs.cmxa -I /Users/aarbaruch/.opam/cs3110-2023fa/lib/ca-certs /Users/aarbaruch/.opam/cs3110-2023fa/lib/conduit-lwt-unix/conduit_lwt_unix.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/re/re.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/uri-sexp/uri_sexp.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/cohttp/cohttp.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/cohttp-lwt/cohttp_lwt.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/logs/logs_fmt.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/cohttp-lwt-unix/cohttp_lwt_unix.cmxa /Users/aarbaruch/.opam/cs3110-2023fa/lib/yojson/yojson.cmxa src/stocks.cmxa bin/.main.eobjs/native/dune__exe__Main.cmx)

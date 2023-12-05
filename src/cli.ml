@@ -1,6 +1,7 @@
 open User
 open Data
 
+(** Hello *)
 module type CliType = sig
   type stock_query = string * int
 
@@ -16,7 +17,7 @@ module type CliType = sig
 
   (* val get_stock : User_Impl -> int -> string -> int *)
   val view_portfolio : User_Impl.t -> (string * int) list
-  val view_balance : User_Impl.t -> int
+  val view_balance : User_Impl.t -> float
   val view_ledger : User_Impl.t -> User_Impl.ledger_entry list ref
 
   val calculate_stock_correlation :
@@ -32,12 +33,12 @@ module Cli : CliType = struct
   module User_Impl = UserImpl
   module Data_Impl = DataAPI
 
-  let make_user (username : string) (balance : int) (test_data : bool) :
+  let make_user (username : string) (balance : float) (test_data : bool) :
       User_Impl.t =
     User_Impl.init_user username balance test_data
 
-  let deposit (user : User_Impl.t) (n : int) = User_Impl.deposit user n
-  let withdraw (user : User_Impl.t) (n : int) = User_Impl.withdraw user n
+  let deposit (user : User_Impl.t) (n : float) = User_Impl.deposit user n
+  let withdraw (user : User_Impl.t) (n : float) = User_Impl.withdraw user n
 
   let buy (user : User_Impl.t) (index : string) (n : int) =
     User_Impl.buy user index n

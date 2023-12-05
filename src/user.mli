@@ -4,9 +4,9 @@ module type User = sig
   type t
 
   val init_user : string -> int -> bool -> t
-  val deposit : t -> int -> t
-  val withdraw : t -> int -> t
-  val balance : t -> int
+  val deposit : t -> float -> t
+  val withdraw : t -> float -> t
+  val balance : t -> float
   val portfolio : t -> (string * int) list
   val ledger : t -> ledger_entry list ref
   val sell : t -> string -> int -> t
