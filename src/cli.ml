@@ -5,16 +5,16 @@ module type CliType = sig
   module User_Impl = UserImpl
   module Data_Impl = DataAPI
 
-  val make_user : string -> int -> User_Impl.t
-  val deposit : User_Impl.t -> int -> User_Impl.t
-  val withdraw : User_Impl.t -> int -> User_Impl.t
+  val make_user : string -> float -> User_Impl.t
+  val deposit : User_Impl.t -> float -> User_Impl.t
+  val withdraw : User_Impl.t -> float -> User_Impl.t
   val buy : User_Impl.t -> string -> int -> User_Impl.t
   val sell : User_Impl.t -> string -> int -> User_Impl.t
   val next_day : User_Impl.t -> User_Impl.t
 
   (* val get_stock : User_Impl -> int -> string -> int *)
   val view_portfolio : User_Impl.t -> (string * int) list
-  val view_balance : User_Impl.t -> int
+  val view_balance : User_Impl.t -> float
   val view_ledger : User_Impl.t -> User_Impl.ledger_entry list ref
   val calculate_stock_correlation : string -> string -> int -> float
   val get_latest_news_feeds : string -> string
@@ -25,11 +25,11 @@ module Cli : CliType = struct
   module User_Impl = UserImpl
   module Data_Impl = DataAPI
 
-  let make_user (username : string) (balance : int) : User_Impl.t =
+  let make_user (username : string) (balance : float) : User_Impl.t =
     User_Impl.init_user username balance
 
-  let deposit (user : User_Impl.t) (n : int) = User_Impl.deposit user n
-  let withdraw (user : User_Impl.t) (n : int) = User_Impl.withdraw user n
+  let deposit (user : User_Impl.t) (n : float) = User_Impl.deposit user n
+  let withdraw (user : User_Impl.t) (n : float) = User_Impl.withdraw user n
 
   let buy (user : User_Impl.t) (index : string) (n : int) =
     User_Impl.buy user index n
