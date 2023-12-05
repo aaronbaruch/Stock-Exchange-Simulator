@@ -54,7 +54,9 @@ module type User = sig
 
   val display_username : t -> string
   (** [display_username user] returns the string of the username *)
-
+  
+  val get_day : t -> int
+  (** Gets the current day of the user *)
   val print_ledger : ledger_entry list ref -> unit
   (** [print_ledger ledger] prints the given ledger *)
 end
@@ -79,7 +81,7 @@ module UserImpl : User = struct
     username : string;
     balance : float;
     stocks : (string * int) list;
-    day : int;
+    days_back : int;
     ledger : ledger_entry list ref;
   }
 
@@ -88,8 +90,10 @@ module UserImpl : User = struct
   (** [init_user username balance] creates a new user account with the given
       [username] and initial [balance]. This user starts with an empty portfolio
       and day 0. *)
-  let init_user (username : string) (balance : float) : t =
-    { username; balance; stocks = []; day = 0; ledger = ref [] }
+
+let init_user (username : string) (balance : float) (dev_mode : bool) : t =
+    let n = if dev_mode then -1 else 100 in
+    { username; balance; stocks = []; days_back = n; ledger = ref [] }
 
   (** [update_balance user n] updates the User's balance *)
   let update_balance (user : t) (n : float) = user.balance +. n
@@ -129,11 +133,13 @@ module UserImpl : User = struct
 
   (** [able_to_buy user index n] checks if the user is able to buy a certain
       stock *)
-  let able_to_buy (user : t) (index : string) (n : int) : bool =
+  let able_to_buy (user : t) (symbol : string) (n : int) : bool =
+    let day = user.days_back in
     let ticker_price =
       Lwt_main.run
-        ( DataAPI.get_ticker_price index >>= fun ticker_price_str ->
+        ( DataAPI.get_ticker_price (symbol, day) >>= fun ticker_price_str ->
           Lwt.return (float_of_string ticker_price_str) )
+
     in
     (* Debug print statement Printf.printf "Ticker Price: %d\n" ticker_price;
        flush stdout;*)
@@ -160,10 +166,11 @@ module UserImpl : User = struct
       stock could not be bought. Returns the edited user with bought stock if
       the stock could be bought.*)
   let buy (user : t) (index : string) (n : int) =
+    let day = user.days_back in
     if able_to_buy user index n then (
       let ticker_price =
         Lwt_main.run
-          ( DataAPI.get_ticker_price index >>= fun ticker_price_str ->
+          ( DataAPI.get_ticker_price (index, day) >>= fun ticker_price_str ->
             Lwt.return (float_of_string ticker_price_str) )
       in
       let cost = ticker_price *. float_of_int n in
@@ -199,7 +206,8 @@ module UserImpl : User = struct
     if able_to_sell user.stocks index n = true then (
       let ticker_price =
         Lwt_main.run
-          ( DataAPI.get_ticker_price index >>= fun ticker_price_str ->
+          ( DataAPI.get_ticker_price (index, user.days_back)
+          >>= fun ticker_price_str ->
             Lwt.return (float_of_string ticker_price_str) )
       in
       let revenue = ticker_price *. float_of_int n in
@@ -219,10 +227,11 @@ module UserImpl : User = struct
     else user
 
   (** [next_day user] iterates the user by 1 to the next day*)
-  let next_day (user : t) = { user with day = user.day + 1 }
+  let next_day (user : t) = { user with days_back = user.days_back + 1 }
 
   (** [display_username user] returns the string of the username *)
   let display_username (user : t) : string = user.username
+  let get_day (user : t) : int = user.days_back
 
   (** [print_ledger ledger] prints the given ledger *)
   let print_ledger (ledger : ledger_entry list ref) : unit =

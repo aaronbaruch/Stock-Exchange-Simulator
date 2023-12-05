@@ -12,12 +12,15 @@ module type CliType = sig
   module Data_Impl : Data
   (** Module type representing the Data module, providing functions for
       retrieving financial data and information. *)
+      
+  type stock_query = string * int
+
 
   val make_user : string -> float -> User_Impl.t
   (** [make_user username balance] creates a new user account with the given
       [username] and initial [balance]. This user starts with an empty portfolio
       and day 0. *)
-
+  
   val deposit : User_Impl.t -> float -> User_Impl.t
   (** [deposit user n] increases the user's balance by [n] dollars. *)
 
@@ -51,16 +54,16 @@ module type CliType = sig
   val view_ledger : User_Impl.t -> User_Impl.ledger_entry list ref
   (** [view_ledger user] returns a reference to the ledger of the user. *)
 
-  val calculate_stock_correlation : string -> string -> int -> float
+  val calculate_stock_correlation : User_Impl.t -> string -> string -> int -> float
   (** [calculate_stock_correlation symbol1 symbol2 days] calculates the
       correlation coefficient between two stocks represented by [symbol1] and
       [symbol2] over the specified number of [days]. *)
 
-  val get_latest_news_feeds : string -> string
+  val get_latest_news_feeds : User_Impl.t -> string -> string
   (** [get_latest_news_feeds symbol] returns a formatted string containing the
       latest news feeds for the specified stock symbol. *)
 
-  val generate_stock_summary : string -> string
+  val generate_stock_summary : User_Impl.t -> string -> string
   (** [generate_stock_summary symbol] generates a summary for the specified
       stock symbol, including relevant information such as price, volume, and
       news sentiment. *)

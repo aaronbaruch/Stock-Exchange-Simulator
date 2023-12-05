@@ -13,11 +13,12 @@ module type User = sig
   (** Type representing user. Contains fields for user info: username, balance,
       stocks, day, ledger *)
 
-  val init_user : string -> float -> t
+
+  val init_user : string -> float -> bool -> t
   (** [init_user username balance] creates a new user account with the given
       [username] and initial [balance]. This user starts with an empty portfolio
       and day 0. *)
-
+      
   val deposit : t -> float -> t
   (** [deposit user n] increases the user's balance by [n] dollars *)
 
@@ -53,6 +54,8 @@ module type User = sig
   val display_username : t -> string
   (** [display_username user] returns the string of the username *)
 
+
+  val get_day : t -> int
   val print_ledger : ledger_entry list ref -> unit
   (** [print_ledger ledger] prints the given ledger *)
 end
