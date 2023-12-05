@@ -2,6 +2,7 @@ open Cohttp_lwt_unix
 open Lwt
 
 module type Data = sig
+  val get_date : unit -> string
   val get_ticker_price : string -> string Lwt.t
   val calculate_stock_correlation : string -> string -> int -> float Lwt.t
   val get_latest_news_feeds : string -> (string * string * float) list Lwt.t
@@ -11,6 +12,13 @@ end
 module DataAPI : Data = struct
   let base_url = "https://www.alphavantage.co/query"
   let api_key = "GRVEB2QNCNZAX221"
+
+  let get_date () =
+    let now = Unix.gettimeofday () in
+    let tm = Unix.localtime now in
+    Printf.sprintf "%04d-%02d-%02d %02d:%02d:%02d" (1900 + tm.Unix.tm_year)
+      (tm.Unix.tm_mon + 1) tm.Unix.tm_mday tm.Unix.tm_hour tm.Unix.tm_min
+      tm.Unix.tm_sec
 
   let get_ticker_price symbol =
     let uri = Uri.of_string base_url in

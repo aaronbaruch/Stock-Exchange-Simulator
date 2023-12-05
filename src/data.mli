@@ -1,4 +1,6 @@
 module type Data = sig
+  val get_date : unit -> string
+
   val get_ticker_price : string -> string Lwt.t
   (** Given the TICKER of a stock, returns its price. Returns -1 if invalid
       ticker or other error *)

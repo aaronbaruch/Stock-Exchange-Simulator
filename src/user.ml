@@ -75,17 +75,15 @@ module UserImpl : User = struct
 
   (** [deposit user n] increases the user's balance by [n] dollars *)
   let deposit (user : t) (n : int) =
-    let entry = { date = "get_date"; action = Deposit n } in
+    let entry = { date = DataAPI.get_date (); action = Deposit n } in
     user.ledger := entry :: !(user.ledger);
     { user with balance = user.balance + n }
 
   (** [withdraw user n] decreases the user's balance by [n] dollars *)
   let withdraw (user : t) (n : int) =
-    if user.balance - n < 0 then { user with balance = user.balance }
-    else
-      let entry = { date = "get_date"; action = Withdraw n } in
-      user.ledger := entry :: !(user.ledger);
-      { user with balance = user.balance - n }
+    let entry = { date = DataAPI.get_date (); action = Withdraw n } in
+    user.ledger := entry :: !(user.ledger);
+    { user with balance = user.balance - n }
 
   (** [balance user] returns an int of the user's balance *)
   let balance (user : t) : int = user.balance
@@ -141,7 +139,7 @@ module UserImpl : User = struct
             Lwt.return (float_of_string ticker_price_str) )
       in
       let entry =
-        { date = "get_date"; action = Buy (index, n, ticker_price) }
+        { date = DataAPI.get_date (); action = Buy (index, n, ticker_price) }
       in
       user.ledger := entry :: !(user.ledger);
       {
@@ -170,7 +168,7 @@ module UserImpl : User = struct
             Lwt.return (float_of_string ticker_price_str) )
       in
       let entry =
-        { date = "get_date"; action = Sell (index, n, ticker_price) }
+        { date = DataAPI.get_date (); action = Sell (index, n, ticker_price) }
       in
       user.ledger := entry :: !(user.ledger);
       {
