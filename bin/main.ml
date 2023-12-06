@@ -131,9 +131,10 @@ let rec main user =
       main user
   | [ "next_day" ] ->
       (*Check cyrrent day in user, If day = -1 then do something*)
-      (*print_endline "Going to the next day!"; main (Cli.Cli.next_day user))*)
-      print_endline "next_day is available only in dev_mode using dummy data";
-      main user
+      print_endline "Going to the next day!";
+      main (Cli.Cli.next_day user)
+      (*print_endline "next_day is available only in dev_mode using dummy
+        data";main user*)
   | [ "balance" ] ->
       print_endline "You have: ";
       print_endline
