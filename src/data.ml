@@ -76,35 +76,40 @@ module DataAPI : Data = struct
       | _ -> Lwt.fail_with "HTTP request failed"
     else
       (* Fetch historical data from JSON file *)
-      let current_path = Unix.getcwd () in
-      print_endline ("Current working directory: " ^ current_path);
       let ticker_filename =
         "src/json/" ^ String.lowercase_ascii symbol ^ ".json"
       in
-      Lwt_io.with_file ~mode:Lwt_io.Input ticker_filename (fun file ->
-          Lwt_io.read file >>= fun content ->
-          let json = Yojson.Basic.from_string content in
-          match json with
-          | `Assoc root_list -> (
-              match List.assoc_opt "Time Series (Daily)" root_list with
-              | Some (`Assoc time_series_list) ->
-                  let sorted_dates =
-                    List.sort
-                      (fun (d1, _) (d2, _) -> compare d2 d1)
-                      time_series_list
-                  in
-                  let rec find_price dates days =
-                    match (dates, days) with
-                    | (_, `Assoc prices) :: _, 0 -> (
-                        match List.assoc_opt "4. close" prices with
-                        | Some (`String close_price) -> Lwt.return close_price
-                        | _ -> Lwt.fail_with "No close price found")
-                    | _ :: tail, n -> find_price tail (n - 1)
-                    | [], _ -> Lwt.fail_with "Date not found in data"
-                  in
-                  find_price sorted_dates days_back
-              | _ -> Lwt.fail_with "No 'Time Series (Daily)' key found")
-          | _ -> Lwt.fail_with "Invalid JSON format")
+      Lwt.catch
+        (fun () ->
+          Lwt_io.with_file ~mode:Lwt_io.Input ticker_filename (fun file ->
+              Lwt_io.read file >>= fun content ->
+              let json = Yojson.Basic.from_string content in
+              match json with
+              | `Assoc root_list -> (
+                  match List.assoc_opt "Time Series (Daily)" root_list with
+                  | Some (`Assoc time_series_list) ->
+                      let sorted_dates =
+                        List.sort
+                          (fun (d1, _) (d2, _) -> compare d2 d1)
+                          time_series_list
+                      in
+                      let rec find_price dates days =
+                        match (dates, days) with
+                        | (_, `Assoc prices) :: _, 0 -> (
+                            match List.assoc_opt "4. close" prices with
+                            | Some (`String close_price) ->
+                                Lwt.return close_price
+                            | _ -> Lwt.fail_with "No close price found")
+                        | _ :: tail, n -> find_price tail (n - 1)
+                        | [], _ -> Lwt.fail_with "Date not found in data"
+                      in
+                      find_price sorted_dates days_back
+                  | _ -> Lwt.fail_with "No 'Time Series (Daily)' key found")
+              | _ -> Lwt.fail_with "Invalid JSON format"))
+        (function
+          | Unix.Unix_error (Unix.ENOENT, _, _) ->
+              Lwt.fail_with "invalid ticker"
+          | e -> Lwt.fail (Failure (Printexc.to_string e)))
 
   let mean lst =
     let sum = List.fold_left ( +. ) 0.0 lst in
@@ -129,6 +134,11 @@ module DataAPI : Data = struct
     let std_dev1 = standard_deviation lst1 in
     let std_dev2 = standard_deviation lst2 in
     cov /. (std_dev1 *. std_dev2)
+
+  let rec drop n lst =
+    match lst with
+    | [] -> []
+    | _ :: tail as l -> if n > 0 then drop (n - 1) tail else l
 
   let get_historical_prices (query : stock_query) days =
     let symbol, days_back = query in
@@ -173,24 +183,15 @@ module DataAPI : Data = struct
           | _ -> Lwt.fail_with "Unexpected error while parsing JSON")
       | _ -> Lwt.fail_with "HTTP request failed"
     else
-      (* Fetch historical data using API *)
-      let uri = Uri.of_string base_url in
-      let params =
-        [
-          ("function", [ "TIME_SERIES_DAILY" ]);
-          ("outputsize", [ "full" ]);
-          ("symbol", [ symbol ]);
-          ("apikey", [ api_key ]);
-        ]
+      (* Fetch historical data from local JSON file *)
+      let ticker_filename =
+        "src/json/" ^ String.lowercase_ascii symbol ^ ".json"
       in
-      let uri = Uri.add_query_params uri params in
-      Client.get uri >>= fun (resp, body) ->
-      body |> Cohttp_lwt.Body.to_string >>= fun body ->
-      match resp.status with
-      | `OK -> (
-          try
-            let json = Yojson.Basic.from_string body in
-            let get_closing_prices json =
+      Lwt.catch
+        (fun () ->
+          Lwt_io.with_file ~mode:Lwt_io.Input ticker_filename (fun file ->
+              Lwt_io.read file >>= fun content ->
+              let json = Yojson.Basic.from_string content in
               match json with
               | `Assoc root_list -> (
                   match List.assoc_opt "Time Series (Daily)" root_list with
@@ -201,25 +202,28 @@ module DataAPI : Data = struct
                           time_series_list
                       in
                       let rec extract_closing_prices dates acc count =
-                        match dates with
-                        | [] -> Lwt.return (List.rev acc)
-                        | (_, `Assoc prices) :: tail when count > 0 -> (
+                        match (dates, count) with
+                        | (_, `Assoc prices) :: tail, n when n > 0 -> (
                             match List.assoc_opt "4. close" prices with
                             | Some (`String close_price) ->
                                 extract_closing_prices tail (close_price :: acc)
-                                  (count - 1)
+                                  (n - 1)
                             | _ -> Lwt.fail_with "No close price found")
                         | _ -> Lwt.return (List.rev acc)
                       in
-                      extract_closing_prices sorted_dates [] days
+                      (* Adjust the starting point based on days_back *)
+                      let start_index =
+                        if List.length sorted_dates > days_back then days_back
+                        else 0
+                      in
+                      let starting_dates = drop start_index sorted_dates in
+                      extract_closing_prices starting_dates [] days
                   | _ -> Lwt.fail_with "No 'Time Series (Daily)' key found")
-              | _ -> Lwt.fail_with "Expected JSON object"
-            in
-            get_closing_prices json
-          with
-          | Yojson.Json_error msg -> Lwt.fail_with msg
-          | _ -> Lwt.fail_with "Unexpected error while parsing JSON")
-      | _ -> Lwt.fail_with "HTTP request failed"
+              | _ -> Lwt.fail_with "Invalid JSON format"))
+        (function
+          | Unix.Unix_error (Unix.ENOENT, _, _) ->
+              Lwt.fail_with "invalid ticker"
+          | e -> Lwt.fail (Failure (Printexc.to_string e)))
 
   let get_historical_prices_as_float query days =
     let%lwt prices = get_historical_prices query days in
@@ -268,24 +272,15 @@ module DataAPI : Data = struct
           | _ -> Lwt.fail_with "Unexpected error while parsing JSON")
       | _ -> Lwt.fail_with "HTTP request failed"
     else
-      (* Fetch historical data using API *)
-      let uri = Uri.of_string base_url in
-      let params =
-        [
-          ("function", [ "TIME_SERIES_DAILY" ]);
-          ("outputsize", [ "full" ]);
-          ("symbol", [ symbol ]);
-          ("apikey", [ api_key ]);
-        ]
+      (* Fetch historical data from local JSON file *)
+      let ticker_filename =
+        "src/json/" ^ String.lowercase_ascii symbol ^ ".json"
       in
-      let uri = Uri.add_query_params uri params in
-      Client.get uri >>= fun (resp, body) ->
-      body |> Cohttp_lwt.Body.to_string >>= fun body ->
-      match resp.status with
-      | `OK -> (
-          try
-            let json = Yojson.Basic.from_string body in
-            let get_closing_prices json =
+      Lwt.catch
+        (fun () ->
+          Lwt_io.with_file ~mode:Lwt_io.Input ticker_filename (fun file ->
+              Lwt_io.read file >>= fun content ->
+              let json = Yojson.Basic.from_string content in
               match json with
               | `Assoc root_list -> (
                   match List.assoc_opt "Time Series (Daily)" root_list with
@@ -295,26 +290,28 @@ module DataAPI : Data = struct
                           (fun (d1, _) (d2, _) -> compare d2 d1)
                           time_series_list
                       in
-                      let rec extract_closing_prices dates acc count =
-                        match dates with
-                        | [] -> Lwt.return (List.rev acc)
-                        | (_, `Assoc prices) :: tail when count > 0 -> (
-                            match List.assoc_opt "4. close" prices with
-                            | Some (`String close_price) ->
-                                extract_closing_prices tail (close_price :: acc)
-                                  (count - 1)
-                            | _ -> Lwt.fail_with "No close price found")
+                      let rec extract_volumes dates acc count =
+                        match (dates, count) with
+                        | (_, `Assoc prices) :: tail, n when n > 0 -> (
+                            match List.assoc_opt "5. volume" prices with
+                            | Some (`String volume) ->
+                                extract_volumes tail (volume :: acc) (n - 1)
+                            | _ -> Lwt.fail_with "No volume data found")
                         | _ -> Lwt.return (List.rev acc)
                       in
-                      extract_closing_prices sorted_dates [] days
+                      (* Adjust the starting point based on days_back *)
+                      let start_index =
+                        if List.length sorted_dates > days_back then days_back
+                        else 0
+                      in
+                      let starting_dates = drop start_index sorted_dates in
+                      extract_volumes starting_dates [] days
                   | _ -> Lwt.fail_with "No 'Time Series (Daily)' key found")
-              | _ -> Lwt.fail_with "Expected JSON object"
-            in
-            get_closing_prices json
-          with
-          | Yojson.Json_error msg -> Lwt.fail_with msg
-          | _ -> Lwt.fail_with "Unexpected error while parsing JSON")
-      | _ -> Lwt.fail_with "HTTP request failed"
+              | _ -> Lwt.fail_with "Invalid JSON format"))
+        (function
+          | Unix.Unix_error (Unix.ENOENT, _, _) ->
+              Lwt.fail_with "invalid ticker"
+          | e -> Lwt.fail (Failure (Printexc.to_string e)))
 
   let get_historical_volumes_as_float query days =
     let%lwt vols = get_historical_volumes query days in
@@ -348,57 +345,59 @@ module DataAPI : Data = struct
       | x :: xs -> x :: take (n - 1) xs
 
   let get_latest_news_feeds query =
-    let symbol, _ = query in
-    let uri =
-      Uri.of_string
-        (base_url ^ "?function=NEWS_SENTIMENT&tickers=" ^ symbol ^ "&apikey="
-       ^ api_key)
-    in
-    Client.get uri >>= fun (resp, body) ->
-    body |> Cohttp_lwt.Body.to_string >>= fun body ->
-    match resp.status with
-    | `OK -> (
-        try
-          let json = Yojson.Basic.from_string body in
-          let extract_news_data json =
-            match json with
-            | `Assoc json_assoc -> (
-                match List.assoc_opt "feed" json_assoc with
-                | Some (`List articles) ->
-                    let first_five_articles = take 5 articles in
-                    List.map
-                      (fun article ->
-                        match article with
-                        | `Assoc article_data ->
-                            let title =
-                              match List.assoc_opt "title" article_data with
-                              | Some (`String t) -> t
-                              | _ -> "No title"
-                            in
-                            let summary =
-                              match List.assoc_opt "summary" article_data with
-                              | Some (`String s) -> s
-                              | _ -> "No summary"
-                            in
-                            let sentiment_score =
-                              match
-                                List.assoc_opt "overall_sentiment_score"
-                                  article_data
-                              with
-                              | Some (`Float s) -> s
-                              | _ -> 0.0
-                            in
-                            (title, summary, sentiment_score)
-                        | _ -> ("Invalid article format", "", 0.0))
-                      first_five_articles
-                | _ -> failwith "No 'feed' key found")
-            | _ -> failwith "Unexpected JSON structure"
-          in
-          Lwt.return (extract_news_data json)
-        with
-        | Yojson.Json_error msg -> Lwt.fail_with msg
-        | Failure msg -> Lwt.fail_with msg)
-    | _ -> Lwt.fail_with "HTTP request failed"
+    let symbol, days_back = query in
+    if days_back <> -1 then Lwt.fail_with "news is only avaliable in live mode"
+    else
+      let uri =
+        Uri.of_string
+          (base_url ^ "?function=NEWS_SENTIMENT&tickers=" ^ symbol ^ "&apikey="
+         ^ api_key)
+      in
+      Client.get uri >>= fun (resp, body) ->
+      body |> Cohttp_lwt.Body.to_string >>= fun body ->
+      match resp.status with
+      | `OK -> (
+          try
+            let json = Yojson.Basic.from_string body in
+            let extract_news_data json =
+              match json with
+              | `Assoc json_assoc -> (
+                  match List.assoc_opt "feed" json_assoc with
+                  | Some (`List articles) ->
+                      let first_five_articles = take 5 articles in
+                      List.map
+                        (fun article ->
+                          match article with
+                          | `Assoc article_data ->
+                              let title =
+                                match List.assoc_opt "title" article_data with
+                                | Some (`String t) -> t
+                                | _ -> "No title"
+                              in
+                              let summary =
+                                match List.assoc_opt "summary" article_data with
+                                | Some (`String s) -> s
+                                | _ -> "No summary"
+                              in
+                              let sentiment_score =
+                                match
+                                  List.assoc_opt "overall_sentiment_score"
+                                    article_data
+                                with
+                                | Some (`Float s) -> s
+                                | _ -> 0.0
+                              in
+                              (title, summary, sentiment_score)
+                          | _ -> ("Invalid article format", "", 0.0))
+                        first_five_articles
+                  | _ -> failwith "No 'feed' key found")
+              | _ -> failwith "Unexpected JSON structure"
+            in
+            Lwt.return (extract_news_data json)
+          with
+          | Yojson.Json_error msg -> Lwt.fail_with msg
+          | Failure msg -> Lwt.fail_with msg)
+      | _ -> Lwt.fail_with "HTTP request failed"
 
   let generate_stock_summary query =
     let ticker, _ = query in
