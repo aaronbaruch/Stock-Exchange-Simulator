@@ -108,24 +108,38 @@ let rec main user =
       main user
   | [ "buy"; x; y ] ->
       if input_is_int y then (
-        let updated_user = Cli.Cli.buy user x (int_of_string y) in
-        if Cli.Cli.view_balance updated_user = Cli.Cli.view_balance user then
-          print_endline
-            (concat_buy_failure_string x y
-               (string_of_float (Cli.Cli.view_balance user)))
-        else print_endline (concat_buy_string y x);
-        main updated_user (* Use updated_user *))
+        match Cli.Cli.buy user x (int_of_string y) with
+        | s ->
+            let updated_user = s in
+            if Cli.Cli.view_balance updated_user = Cli.Cli.view_balance user
+            then
+              print_endline
+                (concat_buy_failure_string x y
+                   (string_of_float (Cli.Cli.view_balance user)))
+            else print_endline (concat_buy_string y x);
+            main updated_user (* Use updated_user *)
+        | exception Failure _ ->
+            print_endline "Eror selling online";
+            print_endline "Going back to commands.";
+            main user)
       else print_endline "Invalid input shares to buy, must be positive integer";
       main user
   | [ "sell"; x; y ] ->
       if input_is_int y then (
-        let updated_user = Cli.Cli.sell user x (int_of_string y) in
-        if Cli.Cli.view_balance updated_user = Cli.Cli.view_balance user then
-          print_endline
-            (concat_sell_failure_string y x
-               (concat_string_list (Cli.Cli.view_portfolio user)))
-        else print_endline (concat_sell_string y x);
-        main updated_user (* Use updated_user *))
+        match Cli.Cli.sell user x (int_of_string y) with
+        | s ->
+            let updated_user = s in
+            if Cli.Cli.view_balance updated_user = Cli.Cli.view_balance user
+            then
+              print_endline
+                (concat_sell_failure_string y x
+                   (concat_string_list (Cli.Cli.view_portfolio user)))
+            else print_endline (concat_sell_string y x);
+            main updated_user (* Use updated_user *)
+        | exception Failure _ ->
+            print_endline "Eror selling online";
+            print_endline "Going back to commands.";
+            main user)
       else
         print_endline "Invalid input shares to sell, must be positive integer";
       main user
@@ -141,21 +155,37 @@ let rec main user =
       main user
   | [ "correlation"; symbol1; symbol2; days ] ->
       if input_is_int days then (
-        print_endline
-          ("Correlation: "
-          ^ string_of_float
-              (Cli.Cli.calculate_stock_correlation user symbol1 symbol2
-                 (int_of_string days)));
-        main user)
+        match
+          Cli.Cli.calculate_stock_correlation user symbol1 symbol2
+            (int_of_string days)
+        with
+        | s ->
+            print_endline ("Correlation: " ^ string_of_float s);
+            main user
+        | exception Failure _ ->
+            print_endline "Eror generating stock correlation";
+            print_endline "Going back to commands.";
+            main user)
       else print_endline "Invalid input for days, must be positive integer";
       main user
-  | [ "news"; symbol ] ->
-      print_endline ("Latest News: " ^ Cli.Cli.get_latest_news_feeds user symbol);
-      main user
-  | [ "analytics"; symbol ] ->
-      print_endline
-        ("Latest Analytics: " ^ Cli.Cli.generate_stock_summary user symbol);
-      main user
+  | [ "news"; symbol ] -> (
+      match Cli.Cli.get_latest_news_feeds user symbol with
+      | s ->
+          print_endline ("Latest News: " ^ s);
+          main user
+      | exception Failure _ ->
+          print_endline "Eror getting latest news feeds.";
+          print_endline "Going back to commands.";
+          main user)
+  | [ "analytics"; symbol ] -> (
+      match Cli.Cli.generate_stock_summary user symbol with
+      | s ->
+          print_endline ("Latest Analytics: " ^ s);
+          main user
+      | exception Failure _ ->
+          print_endline "Eror generating stock summary";
+          print_endline "Going back to commands.";
+          main user)
   | _ ->
       print_endline "Command not recognized";
       main user
