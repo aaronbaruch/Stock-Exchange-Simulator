@@ -76,7 +76,11 @@ module DataAPI : Data = struct
       | _ -> Lwt.fail_with "HTTP request failed"
     else
       (* Fetch historical data from JSON file *)
-      let ticker_filename = "json/" ^ String.lowercase_ascii symbol ^ ".json" in
+      let current_path = Unix.getcwd () in
+      print_endline ("Current working directory: " ^ current_path);
+      let ticker_filename =
+        "src/json/" ^ String.lowercase_ascii symbol ^ ".json"
+      in
       Lwt_io.with_file ~mode:Lwt_io.Input ticker_filename (fun file ->
           Lwt_io.read file >>= fun content ->
           let json = Yojson.Basic.from_string content in

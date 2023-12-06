@@ -92,7 +92,7 @@ module UserImpl : User = struct
       and day 0. *)
 
 let init_user (username : string) (balance : float) (dev_mode : bool) : t =
-    let n = if dev_mode then -1 else 100 in
+    let n = if dev_mode then -1 else 10 in
     { username; balance; stocks = []; days_back = n; ledger = ref [] }
 
   (** [update_balance user n] updates the User's balance *)
