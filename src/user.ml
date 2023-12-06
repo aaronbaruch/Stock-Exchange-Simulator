@@ -54,9 +54,11 @@ module type User = sig
 
   val display_username : t -> string
   (** [display_username user] returns the string of the username *)
-  
-  val get_day : t -> int
-  (** Gets the current day of the user *)
+  val get_date_time_string : t -> string
+  (** [get_date_time_string user] retrieves the date the user's environment is set to *)
+
+  val get_days_back : t -> int
+  (** [get_days_back] returns the int user.days_back *)
   val print_ledger : ledger_entry list ref -> unit
   (** [print_ledger ledger] prints the given ledger *)
 end
@@ -92,7 +94,7 @@ module UserImpl : User = struct
       and day 0. *)
 
 let init_user (username : string) (balance : float) (dev_mode : bool) : t =
-    let n = if dev_mode then -1 else 1000 in
+    let n = if dev_mode then 1260 else -1 in (*1260 is 5 years in trading days*)
     { username; balance; stocks = []; days_back = n; ledger = ref [] }
 
   (** [update_balance user n] updates the User's balance *)
@@ -102,7 +104,7 @@ let init_user (username : string) (balance : float) (dev_mode : bool) : t =
   let deposit (user : t) (n : float) =
     let entry =
       {
-        date = DataAPI.get_date ();
+        date =  Lwt_main.run (DataAPI.get_date user.days_back);
         action = Deposit n;
         balance = update_balance user n;
       }
@@ -115,7 +117,7 @@ let init_user (username : string) (balance : float) (dev_mode : bool) : t =
     if n < user.balance then
     let entry =
       {
-        date = DataAPI.get_date ();
+        date =  Lwt_main.run (DataAPI.get_date user.days_back);
         action = Withdraw n;
         balance = update_balance user (-1. *. n);
       }
@@ -178,7 +180,7 @@ let init_user (username : string) (balance : float) (dev_mode : bool) : t =
       let cost = ticker_price *. float_of_int n in
       let entry =
         {
-          date = DataAPI.get_date ();
+          date =  Lwt_main.run (DataAPI.get_date user.days_back);
           action = Buy (index, n, ticker_price);
           balance = update_balance user (-1. *. cost);
         }
@@ -215,7 +217,7 @@ let init_user (username : string) (balance : float) (dev_mode : bool) : t =
       let revenue = ticker_price *. float_of_int n in
       let entry =
         {
-          date = DataAPI.get_date ();
+          date = Lwt_main.run (DataAPI.get_date user.days_back);
           action = Sell (index, n, ticker_price);
           balance = update_balance user revenue;
         }
@@ -229,11 +231,30 @@ let init_user (username : string) (balance : float) (dev_mode : bool) : t =
     else user
 
   (** [next_day user] iterates the user by 1 to the next day*)
-  let next_day (user : t) = if user.days_back = -1 then user else { user with days_back = user.days_back + 1 }
+  let next_day (user : t) =
+    (* Check if the 'days_back' field is -1 *)
+    if user.days_back = -1 then (
+      (* If true, print a message and return the unmodified user *)
+      print_endline "Next day feature is disabled when using live data";
+      user
+    ) else (
+      (* Otherwise, print messages indicating the operation *)
+      print_endline "Going to the next day!";
+      (*print_endline (string_of_int user.days_back);*)
+      (* Update the 'days_back' field *)
+      let updatedUser =  { user with days_back = user.days_back - 1 } in
+      (* Print the updated 'days_back' and return the updated user *)
+      (*print_endline (string_of_int updatedUser.days_back);*)
+      updatedUser
+    )
+  
+  
 
   (** [display_username user] returns the string of the username *)
   let display_username (user : t) : string = user.username
-  let get_day (user : t) : int = user.days_back
+  let get_date_time_string (user : t) : string = Lwt_main.run (DataAPI.get_date user.days_back)
+
+  let get_days_back user = user.days_back
 
   (** [print_ledger ledger] prints the given ledger *)
   let print_ledger (ledger : ledger_entry list ref) : unit =

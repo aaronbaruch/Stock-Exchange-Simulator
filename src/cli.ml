@@ -13,6 +13,7 @@ module type CliType = sig
   val buy : User_Impl.t -> string -> int -> User_Impl.t
   val sell : User_Impl.t -> string -> int -> User_Impl.t
   val next_day : User_Impl.t -> User_Impl.t
+  val get_date_time_string : User_Impl.t -> string
 
   (* val get_stock : User_Impl -> int -> string -> int *)
   val view_portfolio : User_Impl.t -> (string * int) list
@@ -32,9 +33,9 @@ module Cli : CliType = struct
   module User_Impl = UserImpl
   module Data_Impl = DataAPI
 
-  let make_user (username : string) (balance : float) (test_data : bool) :
+  let make_user (username : string) (balance : float) (dev_mode : bool) :
       User_Impl.t =
-    User_Impl.init_user username balance test_data
+    User_Impl.init_user username balance dev_mode
 
   let deposit (user : User_Impl.t) (n : float) = User_Impl.deposit user n
   let withdraw (user : User_Impl.t) (n : float) = User_Impl.withdraw user n
@@ -47,6 +48,9 @@ module Cli : CliType = struct
 
   let next_day (user : User_Impl.t) = User_Impl.next_day user
 
+  let get_date_time_string (user : User_Impl.t) =
+    User_Impl.get_date_time_string user
+
   (* let get_stock (index : string) = failwith "u" *)
   let view_portfolio (user : User_Impl.t) = User_Impl.portfolio user
   let view_balance (user : User_Impl.t) = User_Impl.balance user
@@ -54,7 +58,7 @@ module Cli : CliType = struct
 
   let calculate_stock_correlation (user : User_Impl.t) (symbol1 : string)
       (symbol2 : string) (lookback_days : int) =
-    let day = User_Impl.get_day user in
+    let day = User_Impl.get_days_back user in
     Lwt_main.run
       (Data_Impl.calculate_stock_correlation (symbol1, day) (symbol2, day)
          lookback_days)
@@ -69,12 +73,12 @@ module Cli : CliType = struct
       "" news_list
 
   let get_latest_news_feeds (user : User_Impl.t) (symbol : string) =
-    let day = User_Impl.get_day user in
+    let day = User_Impl.get_days_back user in
     news_to_string
       (Lwt_main.run (Data_Impl.get_latest_news_feeds (symbol, day)))
 
   let generate_stock_summary (user : User_Impl.t) (symbol : string) =
-    let day = User_Impl.get_day user in
+    let day = User_Impl.get_days_back user in
     Lwt_main.run (Data_Impl.generate_stock_summary (symbol, day))
 end
 (* module Cli : CliType = struct type t

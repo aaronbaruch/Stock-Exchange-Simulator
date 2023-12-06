@@ -43,6 +43,10 @@ module type CliType = sig
   val next_day : User_Impl.t -> User_Impl.t
   (** [next_day user] iterates the user by 1 to the next day. *)
 
+  val get_date_time_string : User_Impl.t -> string
+  (** [get_date_time_string user] retrieves the date the user's environment is
+      set to *)
+
   val view_portfolio : User_Impl.t -> (string * int) list
   (** [view_portfolio user] returns an (string, int) list of the user's
       portfolio. *)

@@ -8,11 +8,12 @@ open Stocks
 (*********** command line interface ***********)
 
 let repl_string =
-  "Please enter the COMMAND you would like to execute: \n\
-   \"deposit N\", \"withdraw N\", \"view_portfolio\", \"view_ledger\", \"buy \
-   <TICKER> <SHARES>\", \"sell <TICKER> <SHARES>\", \"balance\", \"correlation \
-   <TICKER> <TICKER> <DAYS>\", \"news <TICKER>\", \"analytics <TICKER>\", or \
-   \"next_day\""
+  "\n\
+   Please enter the COMMAND you would like to execute: \n\
+   \"deposit N\", \"withdraw N\", \"view_portfolio\", \"view_ledger\", \
+   \"balance\", \"buy <TICKER> <SHARES>\", \"sell <TICKER> <SHARES>\",  \
+   \"correlation <TICKER> <TICKER> <DAYS>\", \"news <TICKER>\", \"analytics \
+   <TICKER>\", \"get_date\", or \"next_day\""
 
 let round_to_two_decimal_places (num : float) : float =
   let multiplier = 10.0 ** 2.0 in
@@ -47,7 +48,7 @@ let concat_deposit_string (input : string) =
   "You deposited " ^ format_dollar_string input
 
 let concat_buy_string (shares : string) (index : string) =
-  "Bought " ^ shares ^ " of " ^ index
+  "Bought" ^ shares ^ " shares of " ^ index
 
 let concat_buy_failure_string (index : string) (shares : string)
     (balance : string) =
@@ -55,7 +56,7 @@ let concat_buy_failure_string (index : string) (shares : string)
   ^ format_dollar_string balance
 
 let concat_sell_string (shares : string) (index : string) =
-  "Sold " ^ shares ^ " of " ^ index
+  "Sold " ^ shares ^ " shares of " ^ index
 
 let concat_sell_failure_string (shares : string) (index : string)
     (port : string) =
@@ -119,8 +120,7 @@ let rec main user =
             else print_endline (concat_buy_string y x);
             main updated_user (* Use updated_user *)
         | exception Failure _ ->
-            print_endline "Eror selling online";
-            print_endline "Going back to commands.";
+            print_endline "Eror buying";
             main user)
       else print_endline "Invalid input shares to buy, must be positive integer";
       main user
@@ -137,18 +137,21 @@ let rec main user =
             else print_endline (concat_sell_string y x);
             main updated_user (* Use updated_user *)
         | exception Failure _ ->
-            print_endline "Eror selling online";
+            print_endline "Eror selling";
             print_endline "Going back to commands.";
             main user)
       else
         print_endline "Invalid input shares to sell, must be positive integer";
       main user
+  | [ "get_date" ] ->
+      let date_string = "Date: " ^ Cli.Cli.get_date_time_string user in
+      print_endline date_string;
+      main user
   | [ "next_day" ] ->
-      (*Check cyrrent day in user, If day = -1 then do something*)
-      print_endline "Going to the next day!";
-      main (Cli.Cli.next_day user)
-      (*print_endline "next_day is available only in dev_mode using dummy
-        data";main user*)
+      let updated_user = Cli.Cli.next_day user in
+      let date_string = Cli.Cli.get_date_time_string updated_user in
+      print_endline ("Date: " ^ date_string);
+      main updated_user
   | [ "balance" ] ->
       print_endline "You have: ";
       print_endline
@@ -174,8 +177,8 @@ let rec main user =
       | s ->
           print_endline ("Latest News: " ^ s);
           main user
-      | exception Failure _ ->
-          print_endline "Eror getting latest news feeds.";
+      | exception Failure s ->
+          print_endline s;
           print_endline "Going back to commands.";
           main user)
   | [ "analytics"; symbol ] -> (
@@ -202,7 +205,6 @@ let rec wrong_val_loop () =
 let () =
   print_endline "\n\nWelcome to the Market!\n";
   (* Get data *)
-  print_endline "Please enter your data file";
   print_string "> ";
   (* let file = read_line () in print_endline "Reading file..."; let input =
      file |> In_channel.open_text |> In_channel.input_all in*)
@@ -210,14 +212,12 @@ let () =
   print_endline "Please enter your username:";
   print_string "> ";
   let username = read_line () in
-  print_endline "Reading username...";
   (* Get initial balance *)
-  print_endline "\nHow much money do you want to begin with?";
+  print_endline "\nHow many dollars do you want to begin with?";
   print_string "> ";
   let balance = wrong_val_loop () in
-  print_endline "Reading balance...";
-  print_endline "Live Data or Testing Data. Insert 'true' for testing data";
-  let test_data = bool_of_string (read_line ()) in
-  let user = ref (Cli.Cli.make_user username balance test_data) in
-  print_endline "Creating dev user...";
+  print_endline
+    "\nInput true for to use historical data and false to use live data";
+  let dev_mode = bool_of_string (String.trim (read_line ())) in
+  let user = ref (Cli.Cli.make_user username balance dev_mode) in
   main !user
