@@ -112,6 +112,7 @@ let init_user (username : string) (balance : float) (dev_mode : bool) : t =
 
   (** [withdraw user n] decreases the user's balance by [n] dollars *)
   let withdraw (user : t) (n : float) =
+    if n < user.balance then
     let entry =
       {
         date = DataAPI.get_date ();
@@ -121,6 +122,7 @@ let init_user (username : string) (balance : float) (dev_mode : bool) : t =
     in
     user.ledger := entry :: !(user.ledger);
     { user with balance = update_balance user (-1. *. n) }
+  else user
 
   (** [balance user] returns a float of the user's balance *)
   let balance (user : t) : float = user.balance
