@@ -8,8 +8,8 @@ API:
 https://www.alphavantage.co/documentation/
 
 To run CLI:
-dune build
-dune exec bin/main.exe
+make build
+make trade
 
 Requirements:
 opam install tls-lwt 

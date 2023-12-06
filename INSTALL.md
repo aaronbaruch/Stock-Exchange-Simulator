@@ -31,6 +31,7 @@ PACKAGES NECESSARY FOR STOCKS-SIMULATOR
 opam install core
 opam install yojson
 opam install dune
+opam install lwt_ssl tls-lwt
 ------------------------------
 
 To run stock-simulator cli
@@ -39,3 +40,17 @@ dune build
 dune exec bin/main.exe
 ------------------------------
 
+Or use make command
+------------------------------
+make build
+make trade
+
+Additional Make Commands
+------------------------------
+make test (Runes OUnits test suite)
+make bisect (Bisect report on testing code coverage)
+make build (Builds files for running)
+make trade (Opens CLI forr running program features)
+make doc (Builds documentation)
+make opendoc (Opens documentation directory)
+make clean (Cleans build files)
