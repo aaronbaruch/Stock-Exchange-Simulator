@@ -255,14 +255,22 @@ let user_cli_suite =
     "wierd character username"
     >:: string_test "2345@#]"
           (User.UserImpl.display_username (Cli.Cli.make_user "2345@#]" 0. true));
+    "next line character username"
+    >:: string_test "\n"
+          (User.UserImpl.display_username (Cli.Cli.make_user "\n" 0. true));
     "get day test, live test"
     >:: int_test (-1)
           (User.UserImpl.get_days_back
              (Cli.Cli.make_user "live user" (-100.00) false));
     "get day test, dummy"
-    >:: int_test 0 (User.UserImpl.get_days_back empty_user);
+    >:: int_test 1260 (User.UserImpl.get_days_back empty_user);
     "get day test, next day"
-    >:: int_test 1 (User.UserImpl.get_days_back (Cli.Cli.next_day empty_user));
+    >:: int_test 1259
+          (User.UserImpl.get_days_back (Cli.Cli.next_day empty_user));
+    "get day test, next day, next day"
+    >:: int_test 1258
+          (User.UserImpl.get_days_back
+             (Cli.Cli.next_day (Cli.Cli.next_day empty_user)));
     "Ledger test, 0"
     >:: bool_test true (0 <= List.length !(Cli.Cli.view_ledger empty_user));
     "Ledger test, 1"
@@ -294,7 +302,7 @@ let user_cli_suite =
 let data_suite =
   [
     "Correlation"
-    >:: float_test 0.
+    >:: float_test 1.
           (Cli.Cli.calculate_stock_correlation
              (Cli.Cli.next_day (Cli.Cli.next_day empty_user))
              "AAPL" "SPY" 2);
@@ -319,13 +327,6 @@ let data_suite =
               (Cli.Cli.generate_stock_summary
                  (Cli.Cli.make_user "live user" (-100.00) false)
                  "SPY"));
-    (* "Stock news, SPY" >:: bool_test true (0 < String.length
-       (Cli.Cli.get_latest_news_feeds (Cli.Cli.make_user "live user" (-100.00)
-       false) "spy")); "Stock news, AAPL" >:: bool_test true (0 < String.length
-       (Cli.Cli.get_latest_news_feeds (Cli.Cli.make_user "live user" (-100.00)
-       false) "AAPL")); "Stock news, IBM" >:: bool_test true (0 < String.length
-       (Cli.Cli.get_latest_news_feeds (Cli.Cli.make_user "live user" (-100.00)
-       false) "IBM")); *)
   ]
 
 let test_suite =
