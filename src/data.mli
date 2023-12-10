@@ -2,6 +2,12 @@
 
 module type Data = sig
   type stock_query = string * int
+  (** The stock_query is designed to retrieve historical stock data and is
+      structured in the format (ticker, days_back). Here, ticker represents the
+      stock symbol of the company you are interested in. The days_back parameter
+      specifies the number of days from the current date for which you want to
+      retrieve data. For example, if days_back is set to 10, the query will
+      fetch stock data from 10 days ago up to the present day. *)
 
   val get_date : int -> string Lwt.t
   (** [get_date n] returns the date of the current day as a formatted string. *)
