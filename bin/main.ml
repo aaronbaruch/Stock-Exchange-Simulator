@@ -48,7 +48,7 @@ let concat_deposit_string (input : string) =
   "You deposited " ^ format_dollar_string input
 
 let concat_buy_string (shares : string) (index : string) =
-  "Bought" ^ shares ^ " shares of " ^ index
+  "Bought " ^ shares ^ " shares of " ^ index
 
 let concat_buy_failure_string (index : string) (shares : string)
     (balance : string) =
